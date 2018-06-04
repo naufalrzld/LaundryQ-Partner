@@ -1,0 +1,107 @@
+{
+  "project_info": {
+    "project_number": "227571104242",
+    "firebase_url": "https://laundryq-a7bdc.firebaseio.com",
+    "project_id": "laundryq-a7bdc",
+    "storage_bucket": "laundryq-a7bdc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227571104242:android:751f29de8ba7f89e",
+        "android_client_info": {
+          "package_name": "com.motion.laundryq"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227571104242-8ltv00mhgn9b8a0ua3cvug389fs5euml.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.motion.laundryq",
+            "certificate_hash": "0369fcf4ec332c88b9f763d83ce883600857898e"
+          }
+        },
+        {
+          "client_id": "227571104242-mtq9ohhjpnir4c2kmcdi5uojufimf2sk.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "227571104242-mtq9ohhjpnir4c2kmcdi5uojufimf2sk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqbBrV2EUob28Mf6fHzQb7UGn22VAgWi4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227571104242-mtq9ohhjpnir4c2kmcdi5uojufimf2sk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:227571104242:android:5f0413531356544d",
+        "android_client_info": {
+          "package_name": "com.motion.laundryq_partner"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "227571104242-nvmo8vmq1t8a6j8ojesrn0e7t8f9s00v.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.motion.laundryq_partner",
+            "certificate_hash": "0369fcf4ec332c88b9f763d83ce883600857898e"
+          }
+        },
+        {
+          "client_id": "227571104242-mtq9ohhjpnir4c2kmcdi5uojufimf2sk.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "227571104242-mtq9ohhjpnir4c2kmcdi5uojufimf2sk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCqbBrV2EUob28Mf6fHzQb7UGn22VAgWi4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "227571104242-mtq9ohhjpnir4c2kmcdi5uojufimf2sk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
