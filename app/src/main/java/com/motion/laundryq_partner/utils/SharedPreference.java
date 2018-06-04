@@ -8,6 +8,7 @@ import com.google.gson.Gson;
 public class SharedPreference {
     private static final String PREF_NAME = "Session";
     private static final String KEY_IS_LOGGED_IN = "isLoggedIn";
+    private static final String KEY_IS_LAUNDRY_REGISTERED = "isLaundryRegistered";
     private static Gson gson = new Gson();
 
     private SharedPreferences sharedPreferences;
@@ -28,6 +29,15 @@ public class SharedPreference {
 
     public boolean isLoggedIn(){
         return sharedPreferences.getBoolean(KEY_IS_LOGGED_IN, false);
+    }
+
+    public void setLaundryRegistered(boolean status) {
+        editor.putBoolean(KEY_IS_LAUNDRY_REGISTERED, status);
+        editor.commit();
+    }
+
+    public boolean isLaundryRegistered(){
+        return sharedPreferences.getBoolean(KEY_IS_LAUNDRY_REGISTERED, false);
     }
 
     public void storeData(String key, Object value) {

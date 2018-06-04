@@ -21,10 +21,15 @@ public class SplashscreenActivity extends AppCompatActivity {
             public void run() {
                 SharedPreference sharedPreference = new SharedPreference(SplashscreenActivity.this);
                 boolean isLogin = sharedPreference.isLoggedIn();
+                boolean isLundryRegistered = sharedPreference.isLaundryRegistered();
                 Intent intent;
 
                 if (isLogin) {
-                    intent = new Intent(SplashscreenActivity.this, MainActivity.class);
+                    if (isLundryRegistered) {
+                        intent = new Intent(SplashscreenActivity.this, MainActivity.class);
+                    } else {
+                        intent = new Intent(SplashscreenActivity.this, RegisterLaundryActivity.class);
+                    }
                 } else {
                     intent = new Intent(SplashscreenActivity.this, LoginActivity.class);
                 }

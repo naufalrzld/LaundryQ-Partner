@@ -29,7 +29,7 @@ import com.motion.laundryq_partner.utils.SharedPreference;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.motion.laundryq_partner.RegisterActivity.USER_PARTNER;
+import static com.motion.laundryq_partner.RegisterAccountActivity.USER_PARTNER;
 
 public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.til_email)
@@ -85,7 +85,7 @@ public class LoginActivity extends AppCompatActivity {
         btnRegister.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(LoginActivity.this, RegisterActivity.class));
+                startActivity(new Intent(LoginActivity.this, RegisterAccountActivity.class));
             }
         });
     }
@@ -148,7 +148,16 @@ public class LoginActivity extends AppCompatActivity {
                 sharedPreference.storeData("profile", userModel);
                 sharedPreference.setLogin(true);
 
-                startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                boolean isLaundryRegistered = sharedPreference.isLaundryRegistered();
+                Intent intent;
+
+                if (isLaundryRegistered) {
+                    intent = new Intent(LoginActivity.this, MainActivity.class);
+                } else {
+                    intent = new Intent(LoginActivity.this, RegisterLaundryActivity.class);
+                }
+
+                startActivity(intent);
                 finish();
             }
 

@@ -22,7 +22,7 @@ import com.motion.laundryq_partner.model.UserModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterAccountActivity extends AppCompatActivity {
     @BindView(R.id.til_nama)
     TextInputLayout tilNama;
     @BindView(R.id.til_no_tlp)
@@ -151,7 +151,7 @@ public class RegisterActivity extends AppCompatActivity {
     private void registerUser(final String nama, final String noTlp, final String email, String password) {
         registerLoading.show();
         auth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(RegisterActivity.this, new OnCompleteListener<AuthResult>() {
+                .addOnCompleteListener(RegisterAccountActivity.this, new OnCompleteListener<AuthResult>() {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         registerLoading.dismiss();
