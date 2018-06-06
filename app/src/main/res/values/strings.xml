@@ -12,7 +12,6 @@
     <string name="txt_sudah_punya_akun">Sudah punya akun?</string>
     <string name="btn_logout_txt">Keluar</string>
     <string name="btn_lanjut_txt">Lanjut</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="hint_alamat_lengkap">Alamat Lengkap</string>
+    <string name="hint_alamat_detail">No. Rumah / Nama Gang</string>
 </resources>
