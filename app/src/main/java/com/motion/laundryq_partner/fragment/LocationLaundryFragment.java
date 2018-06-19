@@ -3,6 +3,8 @@ package com.motion.laundryq_partner.fragment;
 import android.Manifest;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -11,30 +13,30 @@ import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.Toast;
 
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlaceAutocomplete;
-import com.google.android.gms.location.places.ui.PlaceAutocompleteFragment;
-import com.google.android.gms.location.places.ui.PlaceSelectionListener;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.Marker;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.motion.laundryq_partner.R;
+
+import java.util.List;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -49,6 +51,8 @@ import static com.motion.laundryq_partner.RegisterLaundryActivity.MAP_REQUEST_CO
 public class LocationLaundryFragment extends Fragment implements OnMapReadyCallback {
     @BindView(R.id.map_view)
     MapView mapView;
+    @BindView(R.id.btn_set_location)
+    Button btnSetLocation;
     @BindView(R.id.til_alamat)
     TextInputLayout tilAlamat;
     @BindView(R.id.til_alamat_detail)
@@ -67,8 +71,9 @@ public class LocationLaundryFragment extends Fragment implements OnMapReadyCallb
     private boolean locationPermissionGranted = false;
 
     private GoogleMap mGoogleMap;
-    private Marker m;
     private FusedLocationProviderClient fusedLocationProviderClient;
+
+    private double latitude, longitude;
 
     public LocationLaundryFragment() {
         // Required empty public constructor
@@ -88,13 +93,21 @@ public class LocationLaundryFragment extends Fragment implements OnMapReadyCallb
         mapView.onResume();
         mapView.getMapAsync(this);
 
+        btnSetLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String address = getCompleteAddressString(latitude, longitude);
+                String enter[] = address.split("\n");
+                etAlamat.setText(enter[0]);
+            }
+        });
+
         return v;
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mGoogleMap = googleMap;
-        Toast.makeText(getContext(), "Map Is Ready", Toast.LENGTH_SHORT).show();
         if (locationPermissionGranted) {
             getDeviceLocation();
 
@@ -103,6 +116,16 @@ public class LocationLaundryFragment extends Fragment implements OnMapReadyCallb
                 return;
             }
             mGoogleMap.setMyLocationEnabled(true);
+
+            mGoogleMap.setOnCameraMoveListener(new GoogleMap.OnCameraMoveListener() {
+                @Override
+                public void onCameraMove() {
+                    CameraPosition cameraPosition = mGoogleMap.getCameraPosition();
+                    LatLng latLng = cameraPosition.target;
+                    latitude = latLng.latitude;
+                    longitude = latLng.longitude;
+                }
+            });
         }
     }
 
@@ -111,13 +134,9 @@ public class LocationLaundryFragment extends Fragment implements OnMapReadyCallb
 
         mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
 
-    }
+        latitude = latLng.latitude;
+        longitude = latLng.longitude;
 
-    public void addMark(LatLng latLng, String address) {
-        m = mGoogleMap.addMarker(new MarkerOptions()
-                .position(latLng)
-                .title(address));
-        m.setTag(0);
     }
 
     private void getDeviceLocation() {
@@ -131,7 +150,9 @@ public class LocationLaundryFragment extends Fragment implements OnMapReadyCallb
                             public void onSuccess(Location location) {
                                 // Got last known location. In some rare situations this can be null.
                                 if (location != null) {
-                                    moveCamera(new LatLng(location.getLatitude(), location.getLongitude()), DEFAULT_ZOOM);
+                                    latitude = location.getLatitude();
+                                    longitude = location.getLongitude();
+                                    moveCamera(new LatLng(latitude, longitude), DEFAULT_ZOOM);
                                 }
                             }
                         });
@@ -154,23 +175,69 @@ public class LocationLaundryFragment extends Fragment implements OnMapReadyCallb
         }
     }
 
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-        locationPermissionGranted = false;
-        switch (requestCode) {
-            case LOCATION_PERMISSION_REQUEST_CODE: {
-                if (grantResults.length > 0) {
-                    for (int i = 0; i < grantResults.length; i++) {
-                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                            locationPermissionGranted = false;
-                            return;
+    private String getCompleteAddressString(double LATITUDE, double LONGITUDE) {
+        String strAdd = "";
+        Geocoder geocoder = new Geocoder(getContext(), Locale.getDefault());
+        try {
+            List<Address> addresses = geocoder.getFromLocation(LATITUDE, LONGITUDE, 1);
+            if (addresses != null) {
+                Address returnedAddress = addresses.get(0);
+                StringBuilder strReturnedAddress = new StringBuilder("");
+
+                for (int i = 0; i <= returnedAddress.getMaxAddressLineIndex(); i++) {
+                    strReturnedAddress.append(returnedAddress.getAddressLine(i)).append("\n");
+                }
+                strAdd = strReturnedAddress.toString();
+                Log.d(TAG, strReturnedAddress.toString());
+            } else {
+                Log.d(TAG, "No Address returned!");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            Log.w(TAG, "Canont get Address!");
+        }
+
+        return strAdd;
+    }
+
+    public String getAddress() {
+        return etAlamat.getText().toString();
+    }
+
+    public String getAddressDetail() {
+        return etAlamatDetail.getText().toString();
+    }
+
+    public boolean isInputValid() {
+        tilAlamat.setErrorEnabled(false);
+        tilAlamatDetail.setErrorEnabled(false);
+
+        if (TextUtils.isEmpty(etAlamat.getText().toString())) {
+            tilAlamat.setErrorEnabled(true);
+            tilAlamat.setError("Alamat harus diisi");
+            return false;
+        }
+
+        return true;
+    }
+
+        @Override
+        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+            locationPermissionGranted = false;
+            switch (requestCode) {
+                case LOCATION_PERMISSION_REQUEST_CODE: {
+                    if (grantResults.length > 0) {
+                        for (int i = 0; i < grantResults.length; i++) {
+                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                                locationPermissionGranted = false;
+                                return;
+                            }
                         }
+                        locationPermissionGranted = true;
                     }
-                    locationPermissionGranted = true;
                 }
             }
         }
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -178,10 +245,6 @@ public class LocationLaundryFragment extends Fragment implements OnMapReadyCallb
             if (resultCode == RESULT_OK) {
                 Place place = PlaceAutocomplete.getPlace(getContext(), data);
                 moveCamera(place.getLatLng(), DEFAULT_ZOOM);
-                if (m != null) {
-                    m.remove();
-                }
-                addMark(place.getLatLng(), String.valueOf(place.getAddress()));
             } else if (resultCode == PlaceAutocomplete.RESULT_ERROR) {
                 Status status = PlaceAutocomplete.getStatus(getContext(), data);
                 // TODO: Handle the error.

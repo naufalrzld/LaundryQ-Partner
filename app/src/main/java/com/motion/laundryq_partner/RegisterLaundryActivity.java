@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
@@ -48,6 +49,7 @@ public class RegisterLaundryActivity extends AppCompatActivity {
     private int viewPagerPosition, currentState;
 
     private SharedPreference sharedPreference;
+    private String address, addressDetail;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -107,7 +109,15 @@ public class RegisterLaundryActivity extends AppCompatActivity {
                 viewPagerPosition = viewPager.getCurrentItem();
                 currentState = step.getCurrentStateNumber();
                 if (viewPagerPosition != 3) {
-                    nextViewPager(viewPagerPosition, currentState);
+                    Fragment fragment = viewPagerAdapter.getItem(viewPagerPosition);
+                    if (fragment instanceof LocationLaundryFragment) {
+                        LocationLaundryFragment locationLaundryFragment = (LocationLaundryFragment) fragment;
+                        if (locationLaundryFragment.isInputValid()) {
+                            address = locationLaundryFragment.getAddress();
+                            addressDetail = locationLaundryFragment.getAddressDetail();
+                            nextViewPager(viewPagerPosition, currentState);
+                        }
+                    }
                 } else {
                     step.setAllStatesCompleted(true);
                     sharedPreference.setLaundryRegistered(true);

@@ -14,4 +14,5 @@
     <string name="btn_lanjut_txt">Lanjut</string>
     <string name="hint_alamat_lengkap">Alamat Lengkap</string>
     <string name="hint_alamat_detail">No. Rumah / Nama Gang</string>
+    <string name="btn_set_location_txt">Atur Lokasi</string>
 </resources>
