@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="8dp"
+    android:layout_marginRight="8dp">
+
+    <CheckBox
+        android:id="@+id/cb_day"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/txt_sunday" />
+
+    <LinearLayout
+        android:id="@+id/lyt_time"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:paddingLeft="24dp"
+        android:paddingRight="24dp"
+        android:baselineAligned="false"
+        android:visibility="gone">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_time_open" />
+
+            <TextView
+                android:id="@+id/tv_time_open"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="09:00"
+                android:textSize="28sp"
+                android:textColor="@color/colorBlack"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_until"
+                android:textSize="12sp"/>
+
+            <View
+                android:layout_width="wrap_content"
+                android:layout_height="1dp"
+                android:background="@color/colorGray_3"
+                android:layout_marginTop="8dp"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_time_closed" />
+
+            <TextView
+                android:id="@+id/tv_time_closed"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                tools:text="09:00"
+                android:textSize="28sp"
+                android:textColor="@color/colorBlack"/>
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</LinearLayout>

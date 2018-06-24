@@ -25,7 +25,10 @@ import com.motion.laundryq_partner.fragment.FinishRegisLaundryFragment;
 import com.motion.laundryq_partner.fragment.LocationLaundryFragment;
 import com.motion.laundryq_partner.fragment.ProfileLaundryFragment;
 import com.motion.laundryq_partner.fragment.ServiceLaundryFragment;
+import com.motion.laundryq_partner.model.TimeOperationModel;
 import com.motion.laundryq_partner.utils.SharedPreference;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -116,6 +119,12 @@ public class RegisterLaundryActivity extends AppCompatActivity {
                             address = locationLaundryFragment.getAddress();
                             addressDetail = locationLaundryFragment.getAddressDetail();
                             nextViewPager(viewPagerPosition, currentState);
+                        }
+                    } else if (fragment instanceof ServiceLaundryFragment) {
+                        ServiceLaundryFragment serviceLaundryFragment = (ServiceLaundryFragment) fragment;
+                        List<TimeOperationModel> timeOperationModels = serviceLaundryFragment.getTimeOperation();
+                        for (TimeOperationModel tom : timeOperationModels) {
+                            Toast.makeText(RegisterLaundryActivity.this, tom.getDay() + " " + tom.getTimeOpen(), Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {
