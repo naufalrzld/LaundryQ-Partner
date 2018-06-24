@@ -221,23 +221,23 @@ public class LocationLaundryFragment extends Fragment implements OnMapReadyCallb
         return true;
     }
 
-        @Override
-        public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
-            locationPermissionGranted = false;
-            switch (requestCode) {
-                case LOCATION_PERMISSION_REQUEST_CODE: {
-                    if (grantResults.length > 0) {
-                        for (int i = 0; i < grantResults.length; i++) {
-                            if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
-                                locationPermissionGranted = false;
-                                return;
-                            }
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        locationPermissionGranted = false;
+        switch (requestCode) {
+            case LOCATION_PERMISSION_REQUEST_CODE: {
+                if (grantResults.length > 0) {
+                    for (int i = 0; i < grantResults.length; i++) {
+                        if (grantResults[i] != PackageManager.PERMISSION_GRANTED) {
+                            locationPermissionGranted = false;
+                            return;
                         }
-                        locationPermissionGranted = true;
                     }
+                    locationPermissionGranted = true;
                 }
             }
         }
+    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

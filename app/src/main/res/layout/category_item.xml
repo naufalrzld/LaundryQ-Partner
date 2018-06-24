@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical"
+    android:paddingLeft="8dp"
+    android:paddingRight="8dp">
+
+    <CheckBox
+        android:id="@+id/cb_category"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        tools:text="@string/txt_bed_cover" />
+
+    <LinearLayout
+        android:id="@+id/lyt_price"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center"
+        android:visibility="gone">
+
+        <EditText
+            android:id="@+id/et_price"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:hint="@string/txt_rp"
+            android:inputType="number"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_per"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="5dp"/>
+
+        <RadioGroup
+            android:id="@+id/rgPaymentMethod"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:checkedButton="@+id/rbWallet"
+            android:orientation="horizontal">
+
+            <RadioButton
+                android:id="@+id/rb_pcs"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rb_checked"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/txt_pcs"
+                android:textSize="12sp"
+                android:textColor="@drawable/rb_text_checked" />
+
+            <RadioButton
+                android:id="@+id/rb_kg"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rb_checked"
+                android:button="@null"
+                android:gravity="center"
+                android:padding="8dp"
+                android:text="@string/txt_kg"
+                android:textSize="12sp"
+                android:textColor="@drawable/rb_text_checked"
+                android:layout_marginLeft="8dp"
+                android:layout_marginStart="8dp" />
+
+        </RadioGroup>
+
+    </LinearLayout>
+
+</LinearLayout>

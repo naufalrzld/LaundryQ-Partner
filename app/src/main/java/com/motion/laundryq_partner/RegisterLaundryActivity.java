@@ -28,6 +28,7 @@ import com.motion.laundryq_partner.fragment.ServiceLaundryFragment;
 import com.motion.laundryq_partner.model.TimeOperationModel;
 import com.motion.laundryq_partner.utils.SharedPreference;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -53,6 +54,7 @@ public class RegisterLaundryActivity extends AppCompatActivity {
 
     private SharedPreference sharedPreference;
     private String address, addressDetail;
+    private List<TimeOperationModel> listTime = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -122,9 +124,11 @@ public class RegisterLaundryActivity extends AppCompatActivity {
                         }
                     } else if (fragment instanceof ServiceLaundryFragment) {
                         ServiceLaundryFragment serviceLaundryFragment = (ServiceLaundryFragment) fragment;
-                        List<TimeOperationModel> timeOperationModels = serviceLaundryFragment.getTimeOperation();
-                        for (TimeOperationModel tom : timeOperationModels) {
-                            Toast.makeText(RegisterLaundryActivity.this, tom.getDay() + " " + tom.getTimeOpen(), Toast.LENGTH_SHORT).show();
+                        if (serviceLaundryFragment.isInputValid()) {
+                            listTime = serviceLaundryFragment.getTimeOperation();
+                            //nextViewPager(viewPagerPosition, currentState);
+                        } else {
+                            Toast.makeText(RegisterLaundryActivity.this, "Mohon lengkapi data - data yang diminta!", Toast.LENGTH_SHORT).show();
                         }
                     }
                 } else {

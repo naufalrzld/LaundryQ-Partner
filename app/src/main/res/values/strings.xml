@@ -22,14 +22,15 @@
     <string name="txt_time_closed">Jam Tutup</string>
     <string name="txt_category">Kategori</string>
     <string name="txt_bed_cover">Bed Cover</string>
-    <string name="txt_pcs">/ pcs</string>
+    <string name="txt_pcs">PCS</string>
     <string name="txt_rp">Rp. -</string>
     <string name="txt_boneka">Boneka</string>
     <string name="txt_jas">Jas</string>
     <string name="txt_pakaian">Pakaian</string>
-    <string name="txt_kg">/ kg</string>
+    <string name="txt_kg">KG</string>
     <string name="txt_sepatu">Sepatu</string>
     <string name="txt_pesan_antar">Pesan Antar</string>
     <string name="txt_no">Tidak</string>
     <string name="txt_yes">Ya</string>
+    <string name="txt_per">/</string>
 </resources>
