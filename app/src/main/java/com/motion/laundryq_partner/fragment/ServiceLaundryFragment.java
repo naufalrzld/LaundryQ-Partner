@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RadioGroup;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -21,6 +22,7 @@ import com.motion.laundryq_partner.R;
 import com.motion.laundryq_partner.adapter.CategoryAdapter;
 import com.motion.laundryq_partner.adapter.DaysAdapter;
 import com.motion.laundryq_partner.model.CategoryModel;
+import com.motion.laundryq_partner.model.LaundryServicesModel;
 import com.motion.laundryq_partner.model.TimeOperationModel;
 import com.motion.laundryq_partner.utils.TimeOperationalData;
 
@@ -40,12 +42,18 @@ public class ServiceLaundryFragment extends Fragment {
     RecyclerView rvTime;
     @BindView(R.id.rv_category)
     RecyclerView rvCategory;
+    @BindView(R.id.rgDeliveryOrder)
+    RadioGroup rgDeliveryOrder;
 
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
     private List<TimeOperationModel> timeListSelected = new ArrayList<>();
-    private List<CategoryModel> listCategory = new ArrayList<>();
+    private List<CategoryModel> categoryListSelected = new ArrayList<>();
+
+    private CategoryAdapter categoryAdapter;
+
+    private boolean deliberyOrder = false;
 
     public ServiceLaundryFragment() {
         // Required empty public constructor
@@ -87,40 +95,55 @@ public class ServiceLaundryFragment extends Fragment {
 
         daysAdapter.setData(TimeOperationalData.setTimeOperational());
 
-        getDataCategory();
-
-        CategoryAdapter categoryAdapter = new CategoryAdapter(getContext(), new CategoryAdapter.OnItemCheckListener() {
+        categoryAdapter = new CategoryAdapter(getContext(), new CategoryAdapter.OnItemCheckListener() {
             @Override
             public void onItemCheck(CategoryModel categoryModel) {
-                Toast.makeText(getContext(), categoryModel.getCategoryID() + " " + categoryModel.getCategoryName(), Toast.LENGTH_SHORT).show();
+                categoryListSelected.add(categoryModel);
             }
 
             @Override
             public void onItemUpdate(CategoryModel categoryModel) {
-
+                Toast.makeText(getContext(), categoryModel.getCategoryName() + " " +
+                        categoryModel.getCategoryPrice() + " " + categoryModel.getCategoryUnit(),
+                        Toast.LENGTH_SHORT).show();
             }
 
             @Override
             public void onItemUncheck(CategoryModel categoryModel) {
-
+                categoryListSelected.remove(categoryModel);
             }
         });
 
-        rvCategory.setHasFixedSize(false);
-        rvCategory.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvCategory.setAdapter(categoryAdapter);
+        getDataCategory();
 
-        categoryAdapter.setData(listCategory);
+        rgDeliveryOrder.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup radioGroup, int id) {
+                if (id == R.id.rb_no) {
+                    deliberyOrder = false;
+                } else if (id == R.id.rb_yes) {
+                    deliberyOrder = true;
+                }
+            }
+        });
 
         return v;
     }
 
-    public List<TimeOperationModel> getTimeOperation() {
+    public List<TimeOperationModel> getTimeListSelected() {
         return timeListSelected;
     }
 
+    public List<CategoryModel> getCategoryListSelected() {
+        return categoryListSelected;
+    }
+
+    public boolean deliveryOrder() {
+        return deliberyOrder;
+    }
+
     public boolean isInputValid() {
-        if (timeListSelected.size() == 0) {
+        if (timeListSelected.size() == 0 || categoryListSelected.size() == 0) {
             return false;
         }
         return true;
@@ -130,10 +153,17 @@ public class ServiceLaundryFragment extends Fragment {
         databaseReference.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                List<CategoryModel> listCategory = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
                     CategoryModel categoryModel = new CategoryModel(ds.getKey(), ds.child("category_name").getValue(String.class));
                     listCategory.add(categoryModel);
                 }
+
+                rvCategory.setHasFixedSize(true);
+                rvCategory.setLayoutManager(new LinearLayoutManager(getContext()));
+                rvCategory.setAdapter(categoryAdapter);
+
+                categoryAdapter.setData(listCategory);
             }
 
             @Override

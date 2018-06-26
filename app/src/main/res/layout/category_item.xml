@@ -21,25 +21,34 @@
         android:gravity="center"
         android:visibility="gone">
 
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/txt_rp"
+            android:textSize="22sp"
+            android:layout_marginRight="5dp"
+            android:layout_marginEnd="5dp" />
+
         <EditText
             android:id="@+id/et_price"
-            android:layout_width="150dp"
+            android:layout_width="110dp"
             android:layout_height="wrap_content"
-            android:hint="@string/txt_rp"
+            android:text="@string/txt_0"
             android:inputType="number"/>
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/txt_per"
+            android:textSize="22sp"
             android:layout_marginLeft="5dp"
             android:layout_marginRight="5dp"/>
 
         <RadioGroup
-            android:id="@+id/rgPaymentMethod"
+            android:id="@+id/rg_category_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:checkedButton="@+id/rbWallet"
+            android:checkedButton="@+id/rb_pcs"
             android:orientation="horizontal">
 
             <RadioButton

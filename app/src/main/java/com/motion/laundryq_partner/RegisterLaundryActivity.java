@@ -25,6 +25,8 @@ import com.motion.laundryq_partner.fragment.FinishRegisLaundryFragment;
 import com.motion.laundryq_partner.fragment.LocationLaundryFragment;
 import com.motion.laundryq_partner.fragment.ProfileLaundryFragment;
 import com.motion.laundryq_partner.fragment.ServiceLaundryFragment;
+import com.motion.laundryq_partner.model.CategoryModel;
+import com.motion.laundryq_partner.model.LaundryServicesModel;
 import com.motion.laundryq_partner.model.TimeOperationModel;
 import com.motion.laundryq_partner.utils.SharedPreference;
 
@@ -55,6 +57,9 @@ public class RegisterLaundryActivity extends AppCompatActivity {
     private SharedPreference sharedPreference;
     private String address, addressDetail;
     private List<TimeOperationModel> listTime = new ArrayList<>();
+    private List<CategoryModel> listCategory = new ArrayList<>();
+
+    private LaundryServicesModel laundryServicesModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,6 +68,8 @@ public class RegisterLaundryActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         sharedPreference = new SharedPreference(this);
+
+        laundryServicesModel = new LaundryServicesModel();
 
         setupViewPager(viewPager);
 
@@ -125,11 +132,17 @@ public class RegisterLaundryActivity extends AppCompatActivity {
                     } else if (fragment instanceof ServiceLaundryFragment) {
                         ServiceLaundryFragment serviceLaundryFragment = (ServiceLaundryFragment) fragment;
                         if (serviceLaundryFragment.isInputValid()) {
-                            listTime = serviceLaundryFragment.getTimeOperation();
-                            //nextViewPager(viewPagerPosition, currentState);
+                            listTime = serviceLaundryFragment.getTimeListSelected();
+                            listCategory = serviceLaundryFragment.getCategoryListSelected();
+                            laundryServicesModel.setTimeOperationalList(listTime);
+                            laundryServicesModel.setCagoryList(listCategory);
+                            laundryServicesModel.setDeliveryOrder(serviceLaundryFragment.deliveryOrder());
+                            nextViewPager(viewPagerPosition, currentState);
                         } else {
                             Toast.makeText(RegisterLaundryActivity.this, "Mohon lengkapi data - data yang diminta!", Toast.LENGTH_SHORT).show();
                         }
+                    } else if (fragment instanceof ProfileLaundryFragment) {
+                        nextViewPager(viewPagerPosition, currentState);
                     }
                 } else {
                     step.setAllStatesCompleted(true);
@@ -170,6 +183,7 @@ public class RegisterLaundryActivity extends AppCompatActivity {
         }
         setStepTitle((String) viewPagerAdapter.getPageTitle(position + 1));
         viewPager.setCurrentItem(position + 1);
+        viewPagerPosition = viewPager.getCurrentItem();
     }
 
     @Override

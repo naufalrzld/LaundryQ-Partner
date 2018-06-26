@@ -23,7 +23,7 @@
     <string name="txt_category">Kategori</string>
     <string name="txt_bed_cover">Bed Cover</string>
     <string name="txt_pcs">PCS</string>
-    <string name="txt_rp">Rp. -</string>
+    <string name="txt_rp">Rp.</string>
     <string name="txt_boneka">Boneka</string>
     <string name="txt_jas">Jas</string>
     <string name="txt_pakaian">Pakaian</string>
@@ -33,4 +33,11 @@
     <string name="txt_no">Tidak</string>
     <string name="txt_yes">Ya</string>
     <string name="txt_per">/</string>
+    <string name="txt_foto_laundry">Foto Laundry</string>
+    <string name="hint_laundry_name">Nama Laundry</string>
+    <string name="hint_notlp_or_wa">Nomor Telepin / WhatsApp</string>
+    <string name="hint_id_line">ID Line</string>
+    <string name="txt_congratulation">Selamat</string>
+    <string name="txt_congratulation_2">toko laundry anda sudah terdaftar di sistem kami. Laundry anda akan kami verifikasi terlebih dahulu, selama maksimal 1 hari kerja.</string>
+    <string name="txt_0">0</string>
 </resources>

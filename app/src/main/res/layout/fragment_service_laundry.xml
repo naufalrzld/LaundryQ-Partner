@@ -93,17 +93,17 @@
                     android:layout_marginTop="8dp"/>
 
                 <RadioGroup
-                    android:id="@+id/rgPaymentMethod"
+                    android:id="@+id/rgDeliveryOrder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:checkedButton="@+id/rbWallet"
+                    android:checkedButton="@+id/rb_no"
                     android:orientation="horizontal"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp">
 
                     <RadioButton
-                        android:id="@+id/rbWallet"
+                        android:id="@+id/rb_no"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
@@ -117,7 +117,7 @@
                         android:layout_marginEnd="4dp" />
 
                     <RadioButton
-                        android:id="@+id/rbCash"
+                        android:id="@+id/rb_yes"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
