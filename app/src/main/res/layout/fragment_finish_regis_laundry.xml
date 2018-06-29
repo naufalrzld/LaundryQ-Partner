@@ -7,7 +7,7 @@
     android:gravity="center"
     android:paddingLeft="40dp"
     android:paddingRight="40dp"
-    tools:context=".fragment.FinishRegisLaundryFragment">
+    tools:context=".fragment.register_laundry.FinishRegisLaundryFragment">
 
     <ImageView
         android:layout_width="wrap_content"

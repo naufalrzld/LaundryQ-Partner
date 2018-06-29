@@ -21,6 +21,11 @@ public class CategoryModel {
         this.categoryUnit = categoryUnit;
     }
 
+    public CategoryModel(int categoryPrice, String categoryUnit) {
+        this.categoryPrice = categoryPrice;
+        this.categoryUnit = categoryUnit;
+    }
+
     public String getCategoryID() {
         return categoryID;
     }

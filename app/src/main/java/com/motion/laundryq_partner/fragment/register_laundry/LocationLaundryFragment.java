@@ -1,4 +1,4 @@
-package com.motion.laundryq_partner.fragment;
+package com.motion.laundryq_partner.fragment.register_laundry;
 
 import android.Manifest;
 import android.content.Intent;
@@ -19,7 +19,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -206,6 +205,14 @@ public class LocationLaundryFragment extends Fragment implements OnMapReadyCallb
 
     public String getAddressDetail() {
         return etAlamatDetail.getText().toString();
+    }
+
+    public double getLatitude() {
+        return latitude;
+    }
+
+    public double getLongitude() {
+        return longitude;
     }
 
     public boolean isInputValid() {

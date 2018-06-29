@@ -7,8 +7,11 @@
     <color name="colorBlack">#000000</color>
     <color name="colorWhite">#FFFFFF</color>
     <color name="colorGray_1">#E0E0E0</color>
-    <color name="colorGray_2">#BDBDBD</color>
-    <color name="colorGray_3">#B2B2B2</color>
+    <color name="colorGray_2">#E1E1E1</color>
+    <color name="colorGray_3">#BDBDBD</color>
+    <color name="colorGray_4">#B2B2B2</color>
+    <color name="colorGray_5">#888888</color>
     <color name="colorYellow">#FFC107</color>
     <color name="colorOrange">#EF6C00</color>
+    <color name="colorRed">#ff0000</color>
 </resources>

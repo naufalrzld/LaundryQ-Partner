@@ -1,4 +1,4 @@
-package com.motion.laundryq_partner.fragment;
+package com.motion.laundryq_partner.fragment.register_laundry;
 
 
 import android.os.Bundle;
@@ -31,8 +31,6 @@ import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-
-import static com.motion.laundryq_partner.RegisterAccountActivity.USER_PARTNER;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -90,7 +88,6 @@ public class ServiceLaundryFragment extends Fragment {
 
         rvTime.setHasFixedSize(true);
         rvTime.setLayoutManager(new LinearLayoutManager(getContext()));
-        rvTime.setNestedScrollingEnabled(false);
         rvTime.setAdapter(daysAdapter);
 
         daysAdapter.setData(TimeOperationalData.setTimeOperational());
@@ -103,9 +100,7 @@ public class ServiceLaundryFragment extends Fragment {
 
             @Override
             public void onItemUpdate(CategoryModel categoryModel) {
-                Toast.makeText(getContext(), categoryModel.getCategoryName() + " " +
-                        categoryModel.getCategoryPrice() + " " + categoryModel.getCategoryUnit(),
-                        Toast.LENGTH_SHORT).show();
+
             }
 
             @Override

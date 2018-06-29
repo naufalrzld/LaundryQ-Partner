@@ -22,6 +22,8 @@ import com.motion.laundryq_partner.model.UserModel;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_USER_PARTNER;
+
 public class RegisterAccountActivity extends AppCompatActivity {
     @BindView(R.id.til_nama)
     TextInputLayout tilNama;
@@ -49,8 +51,6 @@ public class RegisterAccountActivity extends AppCompatActivity {
     Button btnRegister;
     @BindView(R.id.btn_login)
     Button btnLogin;
-
-    public static final String USER_PARTNER = "partner";
 
     private FirebaseAuth auth;
     private FirebaseDatabase firebaseDatabase;
@@ -170,8 +170,8 @@ public class RegisterAccountActivity extends AppCompatActivity {
     private void saveUserToDatabase(String nama, String noTlp, String email) {
         String split[] = email.split("@");
         String userID = split[0];
-        UserModel userModel = new UserModel(nama, noTlp, email);
+        UserModel userModel = new UserModel(nama, noTlp, email, false);
 
-        databaseReference.child(USER_PARTNER).child(userID).setValue(userModel);
+        databaseReference.child(KEY_FDB_USER_PARTNER).child(userID).setValue(userModel);
     }
 }

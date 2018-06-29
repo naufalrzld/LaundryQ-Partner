@@ -29,7 +29,9 @@ import com.motion.laundryq_partner.utils.SharedPreference;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
-import static com.motion.laundryq_partner.RegisterAccountActivity.USER_PARTNER;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_USERS;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_USER_PARTNER;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_PROFILE;
 
 public class LoginActivity extends AppCompatActivity {
     @BindView(R.id.til_email)
@@ -54,6 +56,8 @@ public class LoginActivity extends AppCompatActivity {
     private SharedPreference sharedPreference;
     private ProgressDialog loginLoading;
 
+    private String password;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -66,7 +70,7 @@ public class LoginActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("users").child(USER_PARTNER);
+        databaseReference = firebaseDatabase.getReference(KEY_FDB_USERS).child(KEY_FDB_USER_PARTNER);
 
         sharedPreference = new SharedPreference(this);
 
@@ -74,7 +78,7 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String email = etEmail.getText().toString();
-                String password = etPassword.getText().toString();
+                password = etPassword.getText().toString();
 
                 if (isInputValid(email, password)) {
                     loginUser(email, password);
@@ -145,10 +149,12 @@ public class LoginActivity extends AppCompatActivity {
                 assert userModel != null;
                 userModel.setUserID(userID);
 
-                sharedPreference.storeData("profile", userModel);
+                userModel.setPassword(password);
+                sharedPreference.storeData(KEY_PROFILE, userModel);
                 sharedPreference.setLogin(true);
+                sharedPreference.setLaundryRegistered(userModel.isHasRegisteredLaundry());
 
-                boolean isLaundryRegistered = sharedPreference.isLaundryRegistered();
+                boolean isLaundryRegistered = userModel.isHasRegisteredLaundry();
                 Intent intent;
 
                 if (isLaundryRegistered) {

@@ -1,4 +1,4 @@
-package com.motion.laundryq_partner.fragment;
+package com.motion.laundryq_partner.fragment.register_laundry;
 
 
 import android.app.Activity;
@@ -11,6 +11,7 @@ import android.provider.MediaStore;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,10 +46,31 @@ public class ProfileLaundryFragment extends Fragment {
 
     public static final int RESULT_LOAD_IMG = 1;
 
+    private Uri imageUri;
+
     public ProfileLaundryFragment() {
         // Required empty public constructor
     }
 
+    public String getLaundryName() {
+        return etLaundryName.getText().toString();
+    }
+
+    public String getNoTlp() {
+        return etNoTlp.getText().toString();
+    }
+
+    public String getIdLine() {
+        return etIDLine.getText().toString();
+    }
+
+    public Uri getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(Uri imageUri) {
+        this.imageUri = imageUri;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -68,10 +90,32 @@ public class ProfileLaundryFragment extends Fragment {
         return v;
     }
 
+    public boolean isInputValid() {
+        tilLaundryName.setErrorEnabled(false);
+        tilNoTlp.setErrorEnabled(false);
+
+        if (TextUtils.isEmpty(etLaundryName.getText().toString()) || TextUtils.isEmpty(etNoTlp.getText().toString())) {
+            if (TextUtils.isEmpty(etLaundryName.getText().toString())) {
+                tilLaundryName.setErrorEnabled(true);
+                tilLaundryName.setError("Nama laundry harus diisi!");
+            }
+
+            if (TextUtils.isEmpty(etNoTlp.getText().toString())) {
+                tilNoTlp.setErrorEnabled(true);
+                tilNoTlp.setError("Nomor telepon / WhatsApp harus diisi!");
+            }
+
+            return false;
+        }
+
+        return true;
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == RESULT_LOAD_IMG && resultCode == RESULT_OK && data != null) {
             Uri selectedImage = data.getData();
+            setImageUri(selectedImage);
             imgPhotoLaundry.setImageURI(selectedImage);
         }
     }

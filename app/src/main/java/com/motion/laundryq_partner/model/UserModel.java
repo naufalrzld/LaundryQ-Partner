@@ -5,15 +5,17 @@ public class UserModel {
     private String nama;
     private String noTlp;
     private String email;
-    private String alamat;
+    private String password;
+    private boolean hasRegisteredLaundry;
 
     public UserModel() {
     }
 
-    public UserModel(String nama, String noTlp, String email) {
+    public UserModel(String nama, String noTlp, String email, boolean hasRegisteredLaundry) {
         this.nama = nama;
         this.noTlp = noTlp;
         this.email = email;
+        this.hasRegisteredLaundry = hasRegisteredLaundry;
     }
 
     public String getUserID() {
@@ -48,11 +50,19 @@ public class UserModel {
         this.email = email;
     }
 
-    public String getAlamat() {
-        return alamat;
+    public String getPassword() {
+        return password;
     }
 
-    public void setAlamat(String alamat) {
-        this.alamat = alamat;
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public boolean isHasRegisteredLaundry() {
+        return hasRegisteredLaundry;
+    }
+
+    public void setHasRegisteredLaundry(boolean hasRegisteredLaundry) {
+        this.hasRegisteredLaundry = hasRegisteredLaundry;
     }
 }

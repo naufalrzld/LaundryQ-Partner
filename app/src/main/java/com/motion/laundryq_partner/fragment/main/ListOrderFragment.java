@@ -1,4 +1,4 @@
-package com.motion.laundryq_partner.fragment;
+package com.motion.laundryq_partner.fragment.main;
 
 
 import android.os.Bundle;
@@ -12,10 +12,10 @@ import com.motion.laundryq_partner.R;
 /**
  * A simple {@link Fragment} subclass.
  */
-public class FinishRegisLaundryFragment extends Fragment {
+public class ListOrderFragment extends Fragment {
 
 
-    public FinishRegisLaundryFragment() {
+    public ListOrderFragment() {
         // Required empty public constructor
     }
 
@@ -24,7 +24,7 @@ public class FinishRegisLaundryFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_finish_regis_laundry, container, false);
+        return inflater.inflate(R.layout.fragment_home, container, false);
     }
 
 }
