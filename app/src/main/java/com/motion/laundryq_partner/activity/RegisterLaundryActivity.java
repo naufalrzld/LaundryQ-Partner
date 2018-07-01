@@ -1,4 +1,4 @@
-package com.motion.laundryq_partner;
+package com.motion.laundryq_partner.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -27,6 +27,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.kofigyan.stateprogressbar.StateProgressBar;
+import com.motion.laundryq_partner.R;
 import com.motion.laundryq_partner.adapter.ViewPagerAdapter;
 import com.motion.laundryq_partner.fragment.register_laundry.FinishRegisLaundryFragment;
 import com.motion.laundryq_partner.fragment.register_laundry.LocationLaundryFragment;
@@ -34,7 +35,7 @@ import com.motion.laundryq_partner.fragment.register_laundry.ProfileLaundryFragm
 import com.motion.laundryq_partner.fragment.register_laundry.ServiceLaundryFragment;
 import com.motion.laundryq_partner.model.CategoryModel;
 import com.motion.laundryq_partner.model.LaundryLocationModel;
-import com.motion.laundryq_partner.model.LaundryProfileModel;
+import com.motion.laundryq_partner.model.LaundryModel;
 import com.motion.laundryq_partner.model.LaundryServicesModel;
 import com.motion.laundryq_partner.model.LaundryServicesModelFBS;
 import com.motion.laundryq_partner.model.TimeOperationModel;
@@ -56,7 +57,6 @@ import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_TIME_CLOSE;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_TIME_OPEN;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_USERS;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_USER_PARTNER;
-import static com.motion.laundryq_partner.utils.AppConstant.KEY_LAUNDRY_LOCATION;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_LAUNDRY_PROFILE;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_LAUNDRY_SERVICES;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_PROFILE;
@@ -85,7 +85,9 @@ public class RegisterLaundryActivity extends AppCompatActivity {
     private DatabaseReference databaseReference;
     private StorageReference storageReference;
 
+    private LaundryModel laundryModel;
     private LaundryServicesModel laundryServicesModel;
+    private UserModel userModel;
 
     private ProgressDialog registerLoading;
 
@@ -108,7 +110,7 @@ public class RegisterLaundryActivity extends AppCompatActivity {
 
         sharedPreference = new SharedPreference(this);
 
-        final UserModel userModel = sharedPreference.getObjectData(KEY_PROFILE, UserModel.class);
+        userModel = sharedPreference.getObjectData(KEY_PROFILE, UserModel.class);
         userID = userModel.getUserID();
 
         setupViewPager(viewPager);
@@ -171,7 +173,8 @@ public class RegisterLaundryActivity extends AppCompatActivity {
                             double longitude = locationLaundryFragment.getLongitude();
 
                             LaundryLocationModel laundryLocationModel = new LaundryLocationModel(address, addressDetail, latitude, longitude);
-                            saveLocation(laundryID, laundryLocationModel);
+                            laundryModel.setLocation(laundryLocationModel);
+                            saveLocation(laundryID, laundryModel);
                         }
                     } else if (fragment instanceof ServiceLaundryFragment) {
                         ServiceLaundryFragment serviceLaundryFragment = (ServiceLaundryFragment) fragment;
@@ -193,8 +196,8 @@ public class RegisterLaundryActivity extends AppCompatActivity {
                             String idLine = profileLaundryFragment.getIdLine();
                             Uri photo = profileLaundryFragment.getImageUri();
 
-                            LaundryProfileModel laundryProfileModel = new LaundryProfileModel(laundryName, noTlp, idLine, userID, false);
-                            saveLaundryProfile(laundryID, laundryProfileModel, photo);
+                            laundryModel = new LaundryModel(laundryName, noTlp, idLine, userID, false, false);
+                            saveLaundryProfile(laundryID, laundryModel, photo);
                         }
                     }
                 } else {
@@ -242,12 +245,12 @@ public class RegisterLaundryActivity extends AppCompatActivity {
         viewPagerPosition = viewPager.getCurrentItem();
     }
 
-    private void saveLaundryProfile(final String laundryID, final LaundryProfileModel laundryProfileModel, Uri imageUri) {
+    private void saveLaundryProfile(final String laundryID, final LaundryModel laundryModel, Uri imageUri) {
         registerLoading.show();
         registerLoading.setMessage("Uploading Photo . . .");
         databaseReference = firebaseDatabase.getReference(KEY_FDB_LAUNDRY);
 
-        laundryProfileModel.setLaundryID(laundryID);
+        laundryModel.setLaundryID(laundryID);
 
         final StorageReference ref = storageReference.child("images/laundry/" + laundryID);
         UploadTask uploadTask = ref.putFile(imageUri);
@@ -268,15 +271,15 @@ public class RegisterLaundryActivity extends AppCompatActivity {
                 if (task.isSuccessful()) {
                     registerLoading.setMessage("Saving . . .");
                     String url = task.getResult().toString();
-                    laundryProfileModel.setUrlPhoto(url);
-                    databaseReference.child(laundryID).setValue(laundryProfileModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    laundryModel.setUrlPhoto(url);
+                    databaseReference.child(laundryID).setValue(laundryModel).addOnCompleteListener(new OnCompleteListener<Void>() {
                         @Override
                         public void onComplete(@NonNull Task<Void> task) {
                             registerLoading.dismiss();
                             if (!task.isSuccessful()) {
                                 Toast.makeText(RegisterLaundryActivity.this, "Data tidak tersimpan", Toast.LENGTH_SHORT).show();
                             } else {
-                                sharedPreference.storeData(KEY_LAUNDRY_PROFILE, laundryProfileModel);
+                                //sharedPreference.storeData(KEY_LAUNDRY_PROFILE, laundryProfileModel);
                                 nextViewPager(viewPagerPosition, currentState);
                             }
                         }
@@ -289,10 +292,10 @@ public class RegisterLaundryActivity extends AppCompatActivity {
         });
     }
 
-    private void saveLocation(String laundryID, final LaundryLocationModel laundryLocationModel) {
+    private void saveLocation(String laundryID, final LaundryModel laundryModel) {
         registerLoading.show();
         databaseReference = firebaseDatabase.getReference(KEY_FDB_LAUNDRY);
-        databaseReference.child(laundryID).child(KEY_FDB_LAUNDRY_LOCATION).setValue(laundryLocationModel)
+        databaseReference.child(laundryID).child(KEY_FDB_LAUNDRY_LOCATION).setValue(laundryModel.getLocation())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -300,7 +303,7 @@ public class RegisterLaundryActivity extends AppCompatActivity {
                         if (!task.isSuccessful()) {
                             Toast.makeText(RegisterLaundryActivity.this, "Data tidak tersimpan", Toast.LENGTH_SHORT).show();
                         } else {
-                            sharedPreference.storeData(KEY_LAUNDRY_LOCATION, laundryLocationModel);
+                            sharedPreference.storeData(KEY_LAUNDRY_PROFILE, laundryModel);
                             nextViewPager(viewPagerPosition, currentState);
                         }
                     }
@@ -351,9 +354,12 @@ public class RegisterLaundryActivity extends AppCompatActivity {
     private void updateDataProfile(UserModel userModel) {
         databaseReference = firebaseDatabase.getReference(KEY_FDB_USERS).child(KEY_FDB_USER_PARTNER);
 
+        userModel.setLaundry(laundryID);
+
         sharedPreference.storeData(KEY_PROFILE, userModel);
 
         databaseReference.child(userID).child(KEY_FDB_HAS_REGISTERED_LAUNDRY).setValue(true);
+        databaseReference.child(userID).child(KEY_FDB_LAUNDRY).setValue(laundryID);
     }
 
     @Override

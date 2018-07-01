@@ -42,7 +42,7 @@ import butterknife.ButterKnife;
 
 import static android.app.Activity.RESULT_CANCELED;
 import static android.app.Activity.RESULT_OK;
-import static com.motion.laundryq_partner.RegisterLaundryActivity.MAP_REQUEST_CODE;
+import static com.motion.laundryq_partner.activity.RegisterLaundryActivity.MAP_REQUEST_CODE;
 
 /**
  * A simple {@link Fragment} subclass.

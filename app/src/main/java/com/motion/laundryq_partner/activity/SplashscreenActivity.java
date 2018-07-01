@@ -1,10 +1,11 @@
-package com.motion.laundryq_partner;
+package com.motion.laundryq_partner.activity;
 
 import android.content.Intent;
 import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
+import com.motion.laundryq_partner.R;
 import com.motion.laundryq_partner.utils.SharedPreference;
 
 public class SplashscreenActivity extends AppCompatActivity {

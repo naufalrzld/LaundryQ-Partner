@@ -7,6 +7,7 @@ public class UserModel {
     private String email;
     private String password;
     private boolean hasRegisteredLaundry;
+    private String laundry;
 
     public UserModel() {
     }
@@ -64,5 +65,13 @@ public class UserModel {
 
     public void setHasRegisteredLaundry(boolean hasRegisteredLaundry) {
         this.hasRegisteredLaundry = hasRegisteredLaundry;
+    }
+
+    public String getLaundry() {
+        return laundry;
+    }
+
+    public void setLaundry(String laundry) {
+        this.laundry = laundry;
     }
 }

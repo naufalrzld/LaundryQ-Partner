@@ -1,4 +1,4 @@
-package com.motion.laundryq_partner;
+package com.motion.laundryq_partner.activity;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -23,14 +23,18 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.motion.laundryq_partner.R;
+import com.motion.laundryq_partner.model.LaundryModel;
 import com.motion.laundryq_partner.model.UserModel;
 import com.motion.laundryq_partner.utils.SharedPreference;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_USERS;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_USER_PARTNER;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_LAUNDRY_PROFILE;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_PROFILE;
 
 public class LoginActivity extends AppCompatActivity {
@@ -65,7 +69,7 @@ public class LoginActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         loginLoading = new ProgressDialog(this);
-        loginLoading.setMessage("Loading . . .");
+        loginLoading.setMessage("Login . . .");
         loginLoading.setCancelable(false);
 
         auth = FirebaseAuth.getInstance();
@@ -141,10 +145,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getDataUser(final String userID) {
-        databaseReference.addValueEventListener(new ValueEventListener() {
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                loginLoading.dismiss();
                 UserModel userModel = dataSnapshot.child(userID).getValue(UserModel.class);
                 assert userModel != null;
                 userModel.setUserID(userID);
@@ -155,21 +158,40 @@ public class LoginActivity extends AppCompatActivity {
                 sharedPreference.setLaundryRegistered(userModel.isHasRegisteredLaundry());
 
                 boolean isLaundryRegistered = userModel.isHasRegisteredLaundry();
-                Intent intent;
 
                 if (isLaundryRegistered) {
-                    intent = new Intent(LoginActivity.this, MainActivity.class);
+                    loginLoading.setMessage("Load data laundry . . .");
+                    getDataLaundry(userModel.getLaundry());
                 } else {
-                    intent = new Intent(LoginActivity.this, RegisterLaundryActivity.class);
+                    loginLoading.dismiss();
+                    Intent intent = new Intent(LoginActivity.this, RegisterLaundryActivity.class);
+                    startActivity(intent);
+                    finish();
                 }
-
-                startActivity(intent);
-                finish();
             }
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
                 Log.e("error", databaseError.getMessage());
+            }
+        });
+    }
+
+    private void getDataLaundry(String laundryID) {
+        databaseReference = firebaseDatabase.getReference(KEY_FDB_LAUNDRY).child(laundryID);
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                loginLoading.dismiss();
+                LaundryModel laundryModel = dataSnapshot.getValue(LaundryModel.class);
+                sharedPreference.storeData(KEY_LAUNDRY_PROFILE, laundryModel);
+                Intent intent = new Intent(LoginActivity.this, MainActivity.class);
+                startActivity(intent);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
     }

@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
-    tools:context=".RegisterLaundryActivity">
+    tools:context=".activity.RegisterLaundryActivity">
 
     <com.kofigyan.stateprogressbar.StateProgressBar
         android:id="@+id/step"
