@@ -19,6 +19,10 @@ public class AppConstant {
     public static final String KEY_FDB_LAUNDRY_LOCATION = "location";
     public static final String KEY_FDB_LAUNDRY_ACTIVE = "active";
     public static final String KEY_FDB_LAUNDRY_OPEN = "open";
+    public static final String KEY_FDB_NAME = "nama";
+    public static final String KEY_FDB_EMAIL = "email";
+    public static final String KEY_FDB_PHONE_NUMBER = "noTlp";
+    public static final String KEY_FDB_URL_PHOTO = "urlPhoto";
 
     public static final String KEY_LAUNDRY_PROFILE = "laundry_profile";
     public static final String KEY_LAUNDRY_LOCATION = "laundry_location";

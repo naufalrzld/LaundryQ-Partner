@@ -355,6 +355,7 @@ public class RegisterLaundryActivity extends AppCompatActivity {
         databaseReference = firebaseDatabase.getReference(KEY_FDB_USERS).child(KEY_FDB_USER_PARTNER);
 
         userModel.setLaundry(laundryID);
+        userModel.setHasRegisteredLaundry(true);
 
         sharedPreference.storeData(KEY_PROFILE, userModel);
 

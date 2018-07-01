@@ -6,6 +6,7 @@ public class UserModel {
     private String noTlp;
     private String email;
     private String password;
+    private String urlPhoto;
     private boolean hasRegisteredLaundry;
     private String laundry;
 
@@ -57,6 +58,14 @@ public class UserModel {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public String getUrlPhoto() {
+        return urlPhoto;
+    }
+
+    public void setUrlPhoto(String urlPhoto) {
+        this.urlPhoto = urlPhoto;
     }
 
     public boolean isHasRegisteredLaundry() {

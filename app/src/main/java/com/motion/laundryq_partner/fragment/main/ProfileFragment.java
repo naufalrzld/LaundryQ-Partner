@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,12 +17,14 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.motion.laundryq_partner.activity.EditProfileActivity;
 import com.motion.laundryq_partner.activity.LoginActivity;
 import com.motion.laundryq_partner.R;
 import com.motion.laundryq_partner.model.LaundryModel;
@@ -93,6 +96,13 @@ public class ProfileFragment extends Fragment {
         initViewOwnerProfile();
         initViewLaundryProfile();
 
+        btnEditProfile.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(getContext(), EditProfileActivity.class));
+            }
+        });
+
         lytLogout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -116,6 +126,15 @@ public class ProfileFragment extends Fragment {
             String name = userModel.getNama();
             String phoneNumber = userModel.getNoTlp();
             String email = userModel.getEmail();
+            String urlPhoto = userModel.getUrlPhoto();
+
+            if (!TextUtils.isEmpty(urlPhoto)) {
+                Glide.with(this)
+                        .load(urlPhoto)
+                        .apply(RequestOptions.circleCropTransform())
+                        .apply(new RequestOptions().override(400, 400))
+                        .into(imgProfile);
+            }
 
             tvName.setText(name);
             tvPhoneNumber.setText(phoneNumber);
@@ -207,4 +226,10 @@ public class ProfileFragment extends Fragment {
         tvLaundryStatus.setText(status);
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        initViewOwnerProfile();
+        initViewLaundryProfile();
+    }
 }

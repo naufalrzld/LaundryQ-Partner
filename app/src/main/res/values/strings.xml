@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">LaundryQ-Partner</string>
+    <string name="app_name">LaundryQ Partner</string>
     <string name="hint_email">Email</string>
     <string name="hint_kata_sandi">Kata Sandi</string>
     <string name="btn_login_txt">Masuk</string>
@@ -40,9 +40,6 @@
     <string name="txt_congratulation">Selamat</string>
     <string name="txt_congratulation_2">toko laundry anda sudah terdaftar di sistem kami. Laundry anda akan kami verifikasi terlebih dahulu, selama maksimal 1 hari kerja.</string>
     <string name="txt_0">0</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_profile_title">Profile</string>
     <string name="menu_daftar_order_title">Daftar Order</string>
     <string name="txt_laundry_profile">Laundry Profile</string>
@@ -52,4 +49,8 @@
     <string name="txt_account">Account</string>
     <string name="txt_logout">Keluar</string>
     <string name="btn_edit_profile_title">Edit Profile</string>
+    <string name="txt_change_photo">Ubah Foto</string>
+    <string name="txt_change_password">Ubah Password</string>
+    <string name="menu_simpan_title">Simpan</string>
+    <string name="activity_edit_profile_title">Edit Profile</string>
 </resources>
