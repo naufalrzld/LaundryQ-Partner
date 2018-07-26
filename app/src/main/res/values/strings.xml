@@ -53,4 +53,24 @@
     <string name="txt_change_password">Ubah Password</string>
     <string name="menu_simpan_title">Simpan</string>
     <string name="activity_edit_profile_title">Edit Profile</string>
+    <string name="txt_date_pickup">Tanggal pengambilan</string>
+    <string name="txt_date_delivery">Tanggal pengiriman</string>
+    <string name="btn_title_decline">Tolak</string>
+    <string name="btn_title_acc">Terima</string>
+    <string name="btn_title_update">Update</string>
+    <string name="txt_status">Status</string>
+    <string name="txt_date_finish">Tanggal selesai</string>
+    <string name="txt_weight">Berat</string>
+    <string name="txt_laundry_type">Jenis cucian</string>
+    <string name="txt_order_name">Nama pemesan</string>
+    <string name="btn_detail">Detail</string>
+    <string name="txt_time_delivery">Waktu pengiriman</string>
+    <string name="txt_time_pickup">Waktu pengambilan</string>
+    <string name="txt_delivery_address">Alamat pengiriman</string>
+    <string name="txt_pickup_address">Alamat pengambilan</string>
+    <string name="ttx_order_date">Tanggal order</string>
+    <string name="txt_order_id">Order ID</string>
+    <string name="btn_title_wash">Cuci</string>
+    <string name="txt_total">Total</string>
+    <string name="activity_detail_order_title">Rincian Pesanan</string>
 </resources>

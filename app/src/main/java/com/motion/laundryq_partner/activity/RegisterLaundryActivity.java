@@ -295,7 +295,8 @@ public class RegisterLaundryActivity extends AppCompatActivity {
     private void saveLocation(String laundryID, final LaundryModel laundryModel) {
         registerLoading.show();
         databaseReference = firebaseDatabase.getReference(KEY_FDB_LAUNDRY);
-        databaseReference.child(laundryID).child(KEY_FDB_LAUNDRY_LOCATION).setValue(laundryModel.getLocation())
+        databaseReference.child(laundryID).child(KEY_FDB_LAUNDRY_LOCATION).setValue(laundryModel.
+                getLocation())
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {

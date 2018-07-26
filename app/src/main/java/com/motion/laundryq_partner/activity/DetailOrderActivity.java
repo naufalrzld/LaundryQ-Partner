@@ -1,0 +1,148 @@
+package com.motion.laundryq_partner.activity;
+
+import android.content.Intent;
+import android.support.annotation.NonNull;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
+import android.view.MenuItem;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.motion.laundryq_partner.R;
+import com.motion.laundryq_partner.adapter.CategoryOrderedAdapter;
+import com.motion.laundryq_partner.model.CategoryModel;
+import com.motion.laundryq_partner.model.OrderModel;
+import com.motion.laundryq_partner.utils.CurrencyConverter;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import butterknife.BindView;
+import butterknife.ButterKnife;
+
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_ORDER_MODEL;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORIES;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY_ID;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY_ID_STATUS;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_ORDER;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_STATUS_ORDER;
+
+public class DetailOrderActivity extends AppCompatActivity {
+    @BindView(R.id.toolbar)
+    Toolbar toolbar;
+    @BindView(R.id.tv_order_id)
+    TextView tvOrderID;
+    @BindView(R.id.tv_date_order)
+    TextView tvDateOrder;
+    @BindView(R.id.tv_address_pickup)
+    TextView tvAddressPickup;
+    @BindView(R.id.tv_address_delivery)
+    TextView tvAddressDelivery;
+    @BindView(R.id.tv_time_pickup)
+    TextView tvTimePickup;
+    @BindView(R.id.tv_time_delivery)
+    TextView tvTimeDelivery;
+    @BindView(R.id.rv_laundry)
+    RecyclerView rvLaundry;
+    @BindView(R.id.tv_total)
+    TextView tvTotal;
+
+    private CategoryOrderedAdapter adapter;
+    private OrderModel orderModel;
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_detail_order);
+        ButterKnife.bind(this);
+
+        setSupportActionBar(toolbar);
+        getSupportActionBar().setTitle(R.string.activity_detail_order_title);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        Intent dataIntent = getIntent();
+        orderModel = dataIntent.getParcelableExtra(KEY_DATA_INTENT_ORDER_MODEL);
+
+        initView();
+        setAdapter();
+    }
+
+    private void initView() {
+        String orderID = orderModel.getOrderID();
+        String dateOrder = orderModel.getDateOrder();
+        String pickupAddress = orderModel.getAddressDetailPick() + " | " + orderModel.getAddressPick();
+        String deliveryAddress = orderModel.getAddressDetailDeliv() + " | " + orderModel.getAddressDeliv();
+        String datePick = orderModel.getDatePickup();
+        String dateDeliv = orderModel.getDateDelivery();
+        String timePick = orderModel.getTimePickup();
+        String timeDeliv = orderModel.getTimeDelivery();
+        String dateTimePick = datePick + ", " + timePick;
+        String dateTimeDeliv = dateDeliv + ", " + timeDeliv;
+        String total = CurrencyConverter.toIDR(orderModel.getTotal());
+
+        tvOrderID.setText(orderID);
+        tvDateOrder.setText(dateOrder);
+        tvAddressPickup.setText(pickupAddress);
+        tvAddressDelivery.setText(deliveryAddress);
+        tvTimePickup.setText(dateTimePick);
+        tvTimeDelivery.setText(dateTimeDeliv);
+        tvTotal.setText(total);
+    }
+
+    private void setAdapter() {
+        adapter = new CategoryOrderedAdapter(this);
+        rvLaundry.setHasFixedSize(true);
+        rvLaundry.setLayoutManager(new LinearLayoutManager(this));
+        rvLaundry.setAdapter(adapter);
+
+        adapter.setCategories(orderModel.getCategories());
+        adapter.setOnButtonUpdateClicked(new CategoryOrderedAdapter.OnButtonUpdateClicked() {
+            @Override
+            public void onButtonClicked(int status, int position) {
+                String orderID = orderModel.getOrderID();
+                updateStatus(orderID, status, String.valueOf(position));
+            }
+        });
+    }
+
+    private void updateStatus(String orderID, int status, final String position) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(KEY_FDB_ORDER);
+        final int updateStatus = status + 1;
+        Map<String, Object> map = new HashMap<>();
+        map.put(KEY_FDB_STATUS_ORDER, updateStatus);
+
+        databaseReference.child(orderID).child(KEY_FDB_CATEGORIES).child(position).updateChildren(map)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            int pos = Integer.parseInt(position);
+                            List<CategoryModel> categories = orderModel.getCategories();
+                            CategoryModel cm = categories.get(pos);
+                            cm.setStatus(updateStatus);
+
+                            categories.set(pos, cm);
+                            adapter.notifyItemChanged(pos);
+                        }
+                    }
+        });
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+}
