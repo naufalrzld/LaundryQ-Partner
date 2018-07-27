@@ -67,6 +67,8 @@ public class DetailOrderActivity extends AppCompatActivity {
     Button btnDecline;
     @BindView(R.id.btn_accept)
     Button btnAccept;
+    @BindView(R.id.btn_finish)
+    Button btnFinish;
 
     private DatabaseReference databaseReference;
 
@@ -140,6 +142,10 @@ public class DetailOrderActivity extends AppCompatActivity {
                 }
             });
         }
+
+        if (isAllLaundryFinished(orderModel.getCategories())) {
+            btnFinish.setVisibility(View.VISIBLE);
+        }
     }
 
     private void setAdapter(int status) {
@@ -195,9 +201,29 @@ public class DetailOrderActivity extends AppCompatActivity {
 
                             categories.set(pos, cm);
                             adapter.notifyItemChanged(pos);
+
+                            if (isAllLaundryFinished(categories)) {
+                                btnFinish.setVisibility(View.VISIBLE);
+                            }
                         }
                     }
         });
+    }
+
+    private boolean isAllLaundryFinished(List<CategoryModel> categories) {
+        boolean status = false;
+        int count = 0;
+        for (CategoryModel cm : categories) {
+            if (cm.getStatus() == 0 || cm.getStatus() == 1) {
+                count++;
+            }
+        }
+
+        if (count == 0) {
+            status = true;
+        }
+
+        return status;
     }
 
     @Override

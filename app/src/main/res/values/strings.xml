@@ -73,4 +73,5 @@
     <string name="btn_title_wash">Cuci</string>
     <string name="txt_total">Total</string>
     <string name="activity_detail_order_title">Rincian Pesanan</string>
+    <string name="btn_title_finish">Selesai</string>
 </resources>

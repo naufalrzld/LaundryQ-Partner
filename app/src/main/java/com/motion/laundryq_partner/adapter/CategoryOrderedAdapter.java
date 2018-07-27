@@ -75,6 +75,7 @@ public class CategoryOrderedAdapter extends RecyclerView.Adapter<CategoryOrdered
             statusMsg = "Dicuci";
         } else if (status == 2) {
             statusMsg = "Selesai";
+            holder.btnUpdateStatus.setVisibility(View.GONE);
         }
 
         if (this.status == KEY_INTENT_LIST_ORDER) {
