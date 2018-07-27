@@ -33,8 +33,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_ORDER_MODEL;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_STATUS;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY_ID_STATUS;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_ORDER;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_INTENT_CUCIAN;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_LAUNDRY_PROFILE;
 
 /**
@@ -113,6 +115,7 @@ public class WashingFragment extends Fragment implements CucianAdapter.OnButtonD
     @Override
     public void onButtonClick(OrderModel orderModel) {
         Intent intent = new Intent(getActivity(), DetailOrderActivity.class);
+        intent.putExtra(KEY_DATA_INTENT_STATUS, KEY_INTENT_CUCIAN);
         intent.putExtra(KEY_DATA_INTENT_ORDER_MODEL, orderModel);
         startActivity(intent);
     }

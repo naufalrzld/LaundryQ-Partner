@@ -8,6 +8,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,11 +32,13 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_ORDER_MODEL;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_STATUS;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORIES;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY_ID;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY_ID_STATUS;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_ORDER;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_STATUS_ORDER;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_INTENT_LIST_ORDER;
 
 public class DetailOrderActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
@@ -54,9 +59,21 @@ public class DetailOrderActivity extends AppCompatActivity {
     RecyclerView rvLaundry;
     @BindView(R.id.tv_total)
     TextView tvTotal;
+    @BindView(R.id.v_border)
+    View vBoder;
+    @BindView(R.id.lyt_btn)
+    LinearLayout lytBtn;
+    @BindView(R.id.btn_decline)
+    Button btnDecline;
+    @BindView(R.id.btn_accept)
+    Button btnAccept;
+
+    private DatabaseReference databaseReference;
 
     private CategoryOrderedAdapter adapter;
     private OrderModel orderModel;
+
+    private int status;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,15 +85,19 @@ public class DetailOrderActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.activity_detail_order_title);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        databaseReference = FirebaseDatabase.getInstance().getReference(KEY_FDB_ORDER);
+
         Intent dataIntent = getIntent();
         orderModel = dataIntent.getParcelableExtra(KEY_DATA_INTENT_ORDER_MODEL);
 
+        status = dataIntent.getIntExtra(KEY_DATA_INTENT_STATUS, 0);
+
         initView();
-        setAdapter();
+        setAdapter(status);
     }
 
     private void initView() {
-        String orderID = orderModel.getOrderID();
+        final String orderID = orderModel.getOrderID();
         String dateOrder = orderModel.getDateOrder();
         String pickupAddress = orderModel.getAddressDetailPick() + " | " + orderModel.getAddressPick();
         String deliveryAddress = orderModel.getAddressDetailDeliv() + " | " + orderModel.getAddressDeliv();
@@ -87,6 +108,7 @@ public class DetailOrderActivity extends AppCompatActivity {
         String dateTimePick = datePick + ", " + timePick;
         String dateTimeDeliv = dateDeliv + ", " + timeDeliv;
         String total = CurrencyConverter.toIDR(orderModel.getTotal());
+        final String laundryID = orderModel.getLaundryID();
 
         tvOrderID.setText(orderID);
         tvDateOrder.setText(dateOrder);
@@ -95,10 +117,33 @@ public class DetailOrderActivity extends AppCompatActivity {
         tvTimePickup.setText(dateTimePick);
         tvTimeDelivery.setText(dateTimeDeliv);
         tvTotal.setText(total);
+
+        if (status == KEY_INTENT_LIST_ORDER) {
+            vBoder.setVisibility(View.VISIBLE);
+            lytBtn.setVisibility(View.VISIBLE);
+
+            btnDecline.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    updateStatus(orderID, laundryID, 2);
+                    vBoder.setVisibility(View.GONE);
+                    lytBtn.setVisibility(View.GONE);
+                }
+            });
+
+            btnAccept.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    updateStatus(orderID, laundryID, 1);
+                    vBoder.setVisibility(View.GONE);
+                    lytBtn.setVisibility(View.GONE);
+                }
+            });
+        }
     }
 
-    private void setAdapter() {
-        adapter = new CategoryOrderedAdapter(this);
+    private void setAdapter(int status) {
+        adapter = new CategoryOrderedAdapter(this, status);
         rvLaundry.setHasFixedSize(true);
         rvLaundry.setLayoutManager(new LinearLayoutManager(this));
         rvLaundry.setAdapter(adapter);
@@ -108,13 +153,32 @@ public class DetailOrderActivity extends AppCompatActivity {
             @Override
             public void onButtonClicked(int status, int position) {
                 String orderID = orderModel.getOrderID();
-                updateStatus(orderID, status, String.valueOf(position));
+                updateStatusCategory(orderID, status, String.valueOf(position));
             }
         });
     }
 
-    private void updateStatus(String orderID, int status, final String position) {
-        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(KEY_FDB_ORDER);
+    private void updateStatus(String orderID, String laundryID, final int status) {
+        Map<String, Object> map = new HashMap<>();
+        map.put(KEY_FDB_STATUS_ORDER, status);
+        map.put(KEY_FDB_LAUNDRY_ID_STATUS, laundryID + "_" + status);
+
+        databaseReference.child(orderID).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                String statusMsg;
+                if (status == 1) {
+                    statusMsg = "Diterima";
+                } else {
+                    statusMsg = "Ditolak";
+                }
+
+                Toast.makeText(getApplicationContext(), statusMsg, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    private void updateStatusCategory(String orderID, int status, final String position) {
         final int updateStatus = status + 1;
         Map<String, Object> map = new HashMap<>();
         map.put(KEY_FDB_STATUS_ORDER, updateStatus);

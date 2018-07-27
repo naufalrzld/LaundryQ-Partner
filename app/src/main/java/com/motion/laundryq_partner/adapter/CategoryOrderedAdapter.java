@@ -8,6 +8,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -21,18 +22,22 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_INTENT_LIST_ORDER;
+
 public class CategoryOrderedAdapter extends RecyclerView.Adapter<CategoryOrderedAdapter.ViewHolder> {
     private Context context;
     private List<CategoryModel> categories;
+    private int status;
     private OnButtonUpdateClicked onButtonUpdateClicked;
 
     public interface OnButtonUpdateClicked {
         void onButtonClicked(int status, int position);
     }
 
-    public CategoryOrderedAdapter(Context context) {
+    public CategoryOrderedAdapter(Context context, int status) {
         this.context = context;
         categories = new ArrayList<>();
+        this.status = status;
     }
 
     public void setCategories(List<CategoryModel> categories) {
@@ -53,7 +58,7 @@ public class CategoryOrderedAdapter extends RecyclerView.Adapter<CategoryOrdered
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, final int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final CategoryModel cm = categories.get(position);
 
         String icon = cm.getIcon();
@@ -72,6 +77,12 @@ public class CategoryOrderedAdapter extends RecyclerView.Adapter<CategoryOrdered
             statusMsg = "Selesai";
         }
 
+        if (this.status == KEY_INTENT_LIST_ORDER) {
+            holder.lytStatus.setVisibility(View.GONE);
+            holder.vBorder.setVisibility(View.GONE);
+            holder.btnUpdateStatus.setVisibility(View.GONE);
+        }
+
         holder.tvStatus.setText(statusMsg);
         Glide.with(context).load(icon).into(holder.imgCategory);
         holder.tvCategoryName.setText(categoryName);
@@ -81,7 +92,7 @@ public class CategoryOrderedAdapter extends RecyclerView.Adapter<CategoryOrdered
             @Override
             public void onClick(View view) {
                 int pos = holder.getAdapterPosition();
-                onButtonUpdateClicked.onButtonClicked(status, position);
+                onButtonUpdateClicked.onButtonClicked(status, pos);
             }
         });
     }
@@ -92,6 +103,10 @@ public class CategoryOrderedAdapter extends RecyclerView.Adapter<CategoryOrdered
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
+        @BindView(R.id.lyt_status)
+        LinearLayout lytStatus;
+        @BindView(R.id.v_border)
+        View vBorder;
         @BindView(R.id.tv_status)
         TextView tvStatus;
         @BindView(R.id.img_category)

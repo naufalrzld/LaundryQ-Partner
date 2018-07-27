@@ -25,8 +25,18 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
     private Context context;
     private List<OrderModel> orderList;
 
+    private OnCardViewClicked onCardViewClicked;
     private OnButtonAcceptClicked onButtonAcceptClicked;
     private OnButtonDeclineClicked onButtonDeclineClicked;
+
+    public OrderAdapter(Context context) {
+        this.context = context;
+        orderList = new ArrayList<>();
+    }
+
+    public interface OnCardViewClicked {
+        void onCardClick(OrderModel orderModel);
+    }
 
     public interface OnButtonAcceptClicked {
         void onAccClick(String orderID, String laundryID);
@@ -36,14 +46,8 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         void onDecClick(String orderID, String laundryID);
     }
 
-    public OrderAdapter(Context context) {
-        this.context = context;
-        orderList = new ArrayList<>();
-    }
-
-    public void setOrderList(List<OrderModel> orderList) {
-        this.orderList = orderList;
-        notifyDataSetChanged();
+    public void setOnCardViewClicked(OnCardViewClicked onCardViewClicked) {
+        this.onCardViewClicked = onCardViewClicked;
     }
 
     public void setOnButtonAcceptClicked(OnButtonAcceptClicked onButtonAcceptClicked) {
@@ -52,6 +56,11 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     public void setOnButtonDeclineClicked(OnButtonDeclineClicked onButtonDeclineClicked) {
         this.onButtonDeclineClicked = onButtonDeclineClicked;
+    }
+
+    public void setOrderList(List<OrderModel> orderList) {
+        this.orderList = orderList;
+        notifyDataSetChanged();
     }
 
     @NonNull
@@ -64,7 +73,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        OrderModel orderModel = orderList.get(position);
+        final OrderModel orderModel = orderList.get(position);
         List<CategoryModel> categories = orderModel.getCategories();
 
         final String laundryID = orderModel.getLaundryID();
@@ -90,6 +99,12 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.ViewHolder> 
         holder.tvDateDelivery.setText(dateDelivery);
         holder.tvTimePickup.setText(timePickup);
         holder.tvTimeDelivery.setText(timeDelivery);
+        holder.cvItem.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onCardViewClicked.onCardClick(orderModel);
+            }
+        });
         holder.btnDecline.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

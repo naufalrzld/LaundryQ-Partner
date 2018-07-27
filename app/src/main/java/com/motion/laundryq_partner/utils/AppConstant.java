@@ -34,4 +34,8 @@ public class AppConstant {
     public static final String KEY_LAUNDRY_SERVICES = "laundry_services";
 
     public static final String KEY_DATA_INTENT_ORDER_MODEL = "order_model";
+    public static final String KEY_DATA_INTENT_STATUS = "status";
+
+    public static final int KEY_INTENT_LIST_ORDER = 0;
+    public static final int KEY_INTENT_CUCIAN = 1;
 }

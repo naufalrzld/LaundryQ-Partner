@@ -1,6 +1,7 @@
 package com.motion.laundryq_partner.fragment.main;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
@@ -21,6 +22,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.motion.laundryq_partner.R;
+import com.motion.laundryq_partner.activity.DetailOrderActivity;
 import com.motion.laundryq_partner.adapter.OrderAdapter;
 import com.motion.laundryq_partner.model.LaundryModel;
 import com.motion.laundryq_partner.model.OrderModel;
@@ -34,16 +36,19 @@ import java.util.Map;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_ORDER_MODEL;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_STATUS;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY_ID_STATUS;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_ORDER;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_STATUS_ORDER;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_INTENT_LIST_ORDER;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_LAUNDRY_PROFILE;
 
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ListOrderFragment extends Fragment implements OrderAdapter.OnButtonDeclineClicked,
-        OrderAdapter.OnButtonAcceptClicked {
+        OrderAdapter.OnButtonAcceptClicked, OrderAdapter.OnCardViewClicked {
     @BindView(R.id.swipe)
     SwipeRefreshLayout swipeRefreshLayout;
     @BindView(R.id.rv_order_list)
@@ -79,8 +84,10 @@ public class ListOrderFragment extends Fragment implements OrderAdapter.OnButton
         });
 
         adapter = new OrderAdapter(getContext());
+        adapter.setOnCardViewClicked(this);
         adapter.setOnButtonDeclineClicked(this);
         adapter.setOnButtonAcceptClicked(this);
+
         rvList.setHasFixedSize(true);
         rvList.setLayoutManager(new LinearLayoutManager(getContext()));
         rvList.setAdapter(adapter);
@@ -112,6 +119,14 @@ public class ListOrderFragment extends Fragment implements OrderAdapter.OnButton
                 Log.e("Error", "onCancelled: " + databaseError.getMessage());
             }
         });
+    }
+
+    @Override
+    public void onCardClick(OrderModel orderModel) {
+        Intent intent = new Intent(getActivity(), DetailOrderActivity.class);
+        intent.putExtra(KEY_DATA_INTENT_STATUS, KEY_INTENT_LIST_ORDER);
+        intent.putExtra(KEY_DATA_INTENT_ORDER_MODEL, orderModel);
+        startActivity(intent);
     }
 
     @Override
