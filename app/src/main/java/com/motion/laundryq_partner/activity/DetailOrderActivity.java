@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -20,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.motion.laundryq_partner.R;
 import com.motion.laundryq_partner.adapter.CategoryOrderedAdapter;
+import com.motion.laundryq_partner.model.AddressModel;
 import com.motion.laundryq_partner.model.CategoryModel;
 import com.motion.laundryq_partner.model.OrderModel;
 import com.motion.laundryq_partner.utils.CurrencyConverter;
@@ -74,6 +76,7 @@ public class DetailOrderActivity extends AppCompatActivity {
 
     private CategoryOrderedAdapter adapter;
     private OrderModel orderModel;
+    private AddressModel addressPickModel, addressDeliveryModel;
 
     private int status;
 
@@ -91,6 +94,8 @@ public class DetailOrderActivity extends AppCompatActivity {
 
         Intent dataIntent = getIntent();
         orderModel = dataIntent.getParcelableExtra(KEY_DATA_INTENT_ORDER_MODEL);
+        addressPickModel = orderModel.getAddressPick();
+        addressDeliveryModel = orderModel.getAddressDelivery();
 
         status = dataIntent.getIntExtra(KEY_DATA_INTENT_STATUS, 0);
 
@@ -101,8 +106,16 @@ public class DetailOrderActivity extends AppCompatActivity {
     private void initView() {
         final String orderID = orderModel.getOrderID();
         String dateOrder = orderModel.getDateOrder();
-        String pickupAddress = orderModel.getAddressDetailPick() + " | " + orderModel.getAddressPick();
-        String deliveryAddress = orderModel.getAddressDetailDeliv() + " | " + orderModel.getAddressDeliv();
+        String pickupAddress = addressPickModel.getAlamat();
+        if (!TextUtils.isEmpty(addressPickModel.getAlamatDetail())) {
+            pickupAddress = addressPickModel.getAlamatDetail() + " | " + addressPickModel.getAlamat();
+        }
+
+        String deliveryAddress = addressDeliveryModel.getAlamat();
+        if (!TextUtils.isEmpty(addressDeliveryModel.getAlamatDetail())) {
+            deliveryAddress = addressDeliveryModel.getAlamatDetail() + " | " + addressDeliveryModel.getAlamat();
+        }
+
         String datePick = orderModel.getDatePickup();
         String dateDeliv = orderModel.getDateDelivery();
         String timePick = orderModel.getTimePickup();
