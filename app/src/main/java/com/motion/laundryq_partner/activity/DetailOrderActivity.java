@@ -21,6 +21,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.motion.laundryq_partner.R;
 import com.motion.laundryq_partner.adapter.CategoryOrderedAdapter;
+import com.motion.laundryq_partner.customviews.NonscrollRecylerview;
 import com.motion.laundryq_partner.model.AddressModel;
 import com.motion.laundryq_partner.model.CategoryModel;
 import com.motion.laundryq_partner.model.OrderModel;
@@ -58,7 +59,11 @@ public class DetailOrderActivity extends AppCompatActivity {
     @BindView(R.id.tv_time_delivery)
     TextView tvTimeDelivery;
     @BindView(R.id.rv_laundry)
-    RecyclerView rvLaundry;
+    NonscrollRecylerview rvLaundry;
+    @BindView(R.id.tv_net_income)
+    TextView tvNetIncome;
+    @BindView(R.id.tv_admin_cost)
+    TextView tvAdminCost;
     @BindView(R.id.tv_total)
     TextView tvTotal;
     @BindView(R.id.v_border)
@@ -123,6 +128,8 @@ public class DetailOrderActivity extends AppCompatActivity {
         String dateTimePick = datePick + ", " + timePick;
         String dateTimeDeliv = dateDeliv + ", " + timeDeliv;
         String total = CurrencyConverter.toIDR(orderModel.getTotal());
+        String adminCost = CurrencyConverter.toIDR(orderModel.getAdminCost());
+        String netIncome = CurrencyConverter.toIDR(orderModel.getLaundryCost());
         final String laundryID = orderModel.getLaundryID();
 
         tvOrderID.setText(orderID);
@@ -132,6 +139,8 @@ public class DetailOrderActivity extends AppCompatActivity {
         tvTimePickup.setText(dateTimePick);
         tvTimeDelivery.setText(dateTimeDeliv);
         tvTotal.setText(total);
+        tvAdminCost.setText(adminCost);
+        tvNetIncome.setText(netIncome);
 
         if (status == KEY_INTENT_LIST_ORDER) {
             vBoder.setVisibility(View.VISIBLE);
