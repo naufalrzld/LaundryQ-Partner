@@ -24,7 +24,6 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:paddingTop="8dp"
-            android:paddingBottom="16dp"
             android:paddingLeft="16dp"
             android:paddingRight="16dp">
 
@@ -39,7 +38,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_name"
-                    android:background="@drawable/et_shape_background_gray"
+                    android:background="@drawable/et_shape_stroke_primary"
                     android:drawableLeft="@drawable/baseline_person_black_24"
                     android:drawableStart="@drawable/baseline_person_black_24"
                     android:drawablePadding="16dp"
@@ -62,7 +61,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_no_tlp"
-                    android:background="@drawable/et_shape_background_gray"
+                    android:background="@drawable/et_shape_stroke_primary"
                     android:drawableLeft="@drawable/baseline_local_phone_black_24"
                     android:drawableStart="@drawable/baseline_local_phone_black_24"
                     android:drawablePadding="16dp"
@@ -85,7 +84,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_email"
-                    android:background="@drawable/et_shape_background_gray"
+                    android:background="@drawable/et_shape_stroke_primary"
                     android:drawableLeft="@drawable/baseline_email_black_24"
                     android:drawableStart="@drawable/baseline_email_black_24"
                     android:drawablePadding="16dp"
@@ -109,7 +108,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_kata_sandi"
-                    android:background="@drawable/et_shape_background_gray"
+                    android:background="@drawable/et_shape_stroke_primary"
                     android:drawableLeft="@drawable/baseline_lock_black_24"
                     android:drawableStart="@drawable/baseline_lock_black_24"
                     android:drawablePadding="16dp"
@@ -133,7 +132,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/hint_konfirmasi_kata_sandi"
-                    android:background="@drawable/et_shape_background_gray"
+                    android:background="@drawable/et_shape_stroke_primary"
                     android:drawableLeft="@drawable/baseline_lock_black_24"
                     android:drawableStart="@drawable/baseline_lock_black_24"
                     android:drawablePadding="16dp"
@@ -151,9 +150,9 @@
                 android:layout_height="42dp"
                 android:text="@string/btn_register_txt"
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorWhite"
                 android:textAllCaps="false"
-                android:background="@drawable/btn_transparant_effect"
+                android:background="@drawable/btn_fill_primary_effect"
                 android:layout_marginTop="16dp"/>
 
             <LinearLayout
@@ -194,10 +193,11 @@
                 android:layout_height="42dp"
                 android:text="@string/btn_login_txt"
                 android:textSize="16sp"
-                android:textColor="@color/colorPrimary"
+                android:textColor="@color/colorWhite"
                 android:textAllCaps="false"
-                android:background="@drawable/btn_transparant_effect"
-                android:layout_marginTop="8dp"/>
+                android:background="@drawable/btn_fill_primary_effect"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="16dp"/>
 
         </LinearLayout>
 
