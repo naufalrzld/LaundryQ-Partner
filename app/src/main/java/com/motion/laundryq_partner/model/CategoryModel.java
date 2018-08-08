@@ -27,7 +27,8 @@ public class CategoryModel implements Parcelable {
         this.categoryUnit = categoryUnit;
     }
 
-    public CategoryModel(int categoryPrice, String categoryUnit) {
+    public CategoryModel(String category_name, int categoryPrice, String categoryUnit) {
+        this.categoryName = category_name;
         this.categoryPrice = categoryPrice;
         this.categoryUnit = categoryUnit;
     }

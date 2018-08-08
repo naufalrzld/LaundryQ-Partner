@@ -53,8 +53,6 @@ import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_HAS_REGISTER
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY_LOCATION;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY_SERVICES;
-import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_TIME_CLOSE;
-import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_TIME_OPEN;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_USERS;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_USER_PARTNER;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_LAUNDRY_PROFILE;
@@ -318,17 +316,15 @@ public class RegisterLaundryActivity extends AppCompatActivity {
         List<TimeOperationModel> timeOperational = laundryServicesModel.getTimeOperationalList();
         List<CategoryModel> categoryList = laundryServicesModel.getCagoryList();
 
-        Map<String, String> timesMap = new HashMap<>();
-        Map<String, Map<String, String>> dayTimeMap = new HashMap<>();
+        Map<String, TimeOperationModel> dayTimeMap = new HashMap<>();
         for (TimeOperationModel tom : timeOperational) {
-            timesMap.put(KEY_FDB_TIME_OPEN, tom.getTimeOpen());
-            timesMap.put(KEY_FDB_TIME_CLOSE, tom.getTimeClose());
-            dayTimeMap.put(tom.getDay(), timesMap);
+            TimeOperationModel time = new TimeOperationModel(tom.getDayNum(), tom.getTimeOpen(), tom.getTimeClose());
+            dayTimeMap.put(tom.getDay(), time);
         }
 
         Map<String, CategoryModel> categoriesMap = new HashMap<>();
         for (CategoryModel cm : categoryList) {
-            CategoryModel cat = new CategoryModel(cm.getCategoryPrice(), cm.getCategoryUnit());
+            CategoryModel cat = new CategoryModel(cm.getCategoryName(), cm.getCategoryPrice(), cm.getCategoryUnit());
             categoriesMap.put(cm.getCategoryID(), cat);
         }
 

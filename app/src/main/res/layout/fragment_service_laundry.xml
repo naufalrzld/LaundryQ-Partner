@@ -34,7 +34,7 @@
                     android:background="@color/colorGray_3"
                     android:layout_marginTop="8dp"/>
 
-                <android.support.v7.widget.RecyclerView
+                <com.motion.laundryq_partner.customviews.NonscrollRecylerview
                     android:id="@+id/rv_time"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -52,7 +52,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/txt_category"
+                    android:text="@string/txt_laundry_type"
                     android:textSize="16sp"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
@@ -63,7 +63,7 @@
                     android:background="@color/colorGray_3"
                     android:layout_marginTop="8dp"/>
 
-                <android.support.v7.widget.RecyclerView
+                <com.motion.laundryq_partner.customviews.NonscrollRecylerview
                     android:id="@+id/rv_category"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@string/txt_pesan_antar"
+                    android:text="@string/txt_delivery_order"
                     android:textSize="16sp"
                     android:textColor="@color/colorBlack"
                     android:textStyle="bold"/>
@@ -92,14 +92,19 @@
                     android:background="@color/colorGray_3"
                     android:layout_marginTop="8dp"/>
 
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@string/txt_pesan_antar"
+                    android:textColor="@color/colorBlack"
+                    android:layout_marginTop="8dp"/>
+
                 <RadioGroup
                     android:id="@+id/rgDeliveryOrder"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:checkedButton="@+id/rb_no"
                     android:orientation="horizontal"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
                     android:layout_marginTop="8dp">
 
                     <RadioButton

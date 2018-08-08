@@ -5,12 +5,12 @@ import java.util.List;
 public class LaundryServicesModel {
     private List<TimeOperationModel> timeOperationalList;
     private List<CategoryModel> cagoryList;
-    private boolean deliveryOrder;
+    private Boolean deliveryOrder;
 
     public LaundryServicesModel() {
     }
 
-    public LaundryServicesModel(List<TimeOperationModel> timeOperationalList, List<CategoryModel> cagoryList, boolean deliveryOrder) {
+    public LaundryServicesModel(List<TimeOperationModel> timeOperationalList, List<CategoryModel> cagoryList, Boolean deliveryOrder) {
         this.timeOperationalList = timeOperationalList;
         this.cagoryList = cagoryList;
         this.deliveryOrder = deliveryOrder;
@@ -32,11 +32,11 @@ public class LaundryServicesModel {
         this.cagoryList = cagoryList;
     }
 
-    public boolean isDeliveryOrder() {
+    public Boolean isDeliveryOrder() {
         return deliveryOrder;
     }
 
-    public void setDeliveryOrder(boolean deliveryOrder) {
+    public void setDeliveryOrder(Boolean deliveryOrder) {
         this.deliveryOrder = deliveryOrder;
     }
 }

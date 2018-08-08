@@ -167,11 +167,11 @@
                     android:layout_marginTop="8dp" />
 
                 <Button
-                    android:id="@+id/btn_laundry_setting"
+                    android:id="@+id/btn_laundry_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:background="@drawable/btn_transparant_effect_2"
-                    android:text="@string/btn_laundry_setting_title"
+                    android:text="@string/btn_title_laundry_detail"
                     android:textColor="@color/colorPrimary" />
 
             </LinearLayout>

@@ -5,13 +5,13 @@ import java.util.Map;
 public class LaundryServicesModelFBS {
     private boolean delivery_order;
     private Map<String, CategoryModel> categories;
-    private Map<String, Map<String, String>> time_operational;
+    private Map<String, TimeOperationModel> time_operational;
 
     public LaundryServicesModelFBS() {
     }
 
     public LaundryServicesModelFBS(boolean delivery_order, Map<String, CategoryModel> categories,
-                                   Map<String, Map<String, String>> time_operational) {
+                                   Map<String, TimeOperationModel> time_operational) {
         this.delivery_order = delivery_order;
         this.categories = categories;
         this.time_operational = time_operational;
@@ -33,11 +33,11 @@ public class LaundryServicesModelFBS {
         this.categories = categories;
     }
 
-    public Map<String, Map<String, String>> getTime_operational() {
+    public Map<String, TimeOperationModel> getTime_operational() {
         return time_operational;
     }
 
-    public void setTime_operational(Map<String, Map<String, String>> time_operational) {
+    public void setTime_operational(Map<String, TimeOperationModel> time_operational) {
         this.time_operational = time_operational;
     }
 }

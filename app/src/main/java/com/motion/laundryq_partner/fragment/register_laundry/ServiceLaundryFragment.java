@@ -21,6 +21,7 @@ import com.google.firebase.database.ValueEventListener;
 import com.motion.laundryq_partner.R;
 import com.motion.laundryq_partner.adapter.CategoryAdapter;
 import com.motion.laundryq_partner.adapter.DaysAdapter;
+import com.motion.laundryq_partner.customviews.NonscrollRecylerview;
 import com.motion.laundryq_partner.model.CategoryModel;
 import com.motion.laundryq_partner.model.LaundryServicesModel;
 import com.motion.laundryq_partner.model.TimeOperationModel;
@@ -32,14 +33,16 @@ import java.util.List;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY;
+
 /**
  * A simple {@link Fragment} subclass.
  */
 public class ServiceLaundryFragment extends Fragment {
     @BindView(R.id.rv_time)
-    RecyclerView rvTime;
+    NonscrollRecylerview rvTime;
     @BindView(R.id.rv_category)
-    RecyclerView rvCategory;
+    NonscrollRecylerview rvCategory;
     @BindView(R.id.rgDeliveryOrder)
     RadioGroup rgDeliveryOrder;
 
@@ -66,7 +69,7 @@ public class ServiceLaundryFragment extends Fragment {
         ButterKnife.bind(this, v);
 
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference("category");
+        databaseReference = firebaseDatabase.getReference(KEY_FDB_CATEGORY);
 
         DaysAdapter daysAdapter = new DaysAdapter(getContext(), new DaysAdapter.OnItemCheckListener() {
             @Override
@@ -150,7 +153,9 @@ public class ServiceLaundryFragment extends Fragment {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 List<CategoryModel> listCategory = new ArrayList<>();
                 for (DataSnapshot ds : dataSnapshot.getChildren()) {
-                    CategoryModel categoryModel = new CategoryModel(ds.getKey(), ds.child("category_name").getValue(String.class));
+                    CategoryModel categoryModel = ds.getValue(CategoryModel.class);
+                    assert categoryModel != null;
+                    categoryModel.setCategoryID(ds.getKey());
                     listCategory.add(categoryModel);
                 }
 

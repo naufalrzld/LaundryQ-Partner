@@ -10,16 +10,16 @@ public class TimeOperationalData {
         List<TimeOperationModel> list = new ArrayList<>();
 
         String days[] = {"Minggu", "Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu"};
-        String timeOpen = "09.00";
-        String timeClosed = "21.00";
+        String timeOpen = "09:00";
+        String timeClosed = "21:00";
 
-        TimeOperationModel minggu = new TimeOperationModel(days[0], timeOpen, timeClosed);
-        TimeOperationModel senin = new TimeOperationModel(days[1], timeOpen, timeClosed);
-        TimeOperationModel selasa = new TimeOperationModel(days[2], timeOpen, timeClosed);
-        TimeOperationModel rabu = new TimeOperationModel(days[3], timeOpen, timeClosed);
-        TimeOperationModel kamis = new TimeOperationModel(days[4], timeOpen, timeClosed);
-        TimeOperationModel jumat = new TimeOperationModel(days[5], timeOpen, timeClosed);
-        TimeOperationModel sabtu = new TimeOperationModel(days[6], timeOpen, timeClosed);
+        TimeOperationModel minggu = new TimeOperationModel(days[0], 0, timeOpen, timeClosed);
+        TimeOperationModel senin = new TimeOperationModel(days[1], 1, timeOpen, timeClosed);
+        TimeOperationModel selasa = new TimeOperationModel(days[2], 2, timeOpen, timeClosed);
+        TimeOperationModel rabu = new TimeOperationModel(days[3], 3, timeOpen, timeClosed);
+        TimeOperationModel kamis = new TimeOperationModel(days[4], 4, timeOpen, timeClosed);
+        TimeOperationModel jumat = new TimeOperationModel(days[5], 5, timeOpen, timeClosed);
+        TimeOperationModel sabtu = new TimeOperationModel(days[6], 6, timeOpen, timeClosed);
 
         list.add(0, minggu);
         list.add(1, senin);

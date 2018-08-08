@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="16dp">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/txt_pesan_antar"
+        android:textColor="@color/colorBlack" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="@color/colorGray_3"
+        android:layout_marginTop="8dp"/>
+
+    <RadioGroup
+        android:id="@+id/rgDeliveryOrder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/rb_no"
+        android:orientation="horizontal"
+        android:layout_marginTop="8dp">
+
+        <RadioButton
+            android:id="@+id/rb_no"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rb_checked"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/txt_no"
+            android:textColor="@drawable/rb_text_checked"
+            android:layout_marginRight="4dp"
+            android:layout_marginEnd="4dp" />
+
+        <RadioButton
+            android:id="@+id/rb_yes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:background="@drawable/rb_checked"
+            android:button="@null"
+            android:gravity="center"
+            android:padding="10dp"
+            android:text="@string/txt_yes"
+            android:textColor="@drawable/rb_text_checked"
+            android:layout_marginLeft="4dp"
+            android:layout_marginStart="4dp" />
+
+    </RadioGroup>
+
+</LinearLayout>

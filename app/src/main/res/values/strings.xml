@@ -20,7 +20,6 @@
     <string name="txt_time_open">Jam Buka</string>
     <string name="txt_until">Sampai</string>
     <string name="txt_time_closed">Jam Tutup</string>
-    <string name="txt_category">Kategori</string>
     <string name="txt_bed_cover">Bed Cover</string>
     <string name="txt_pcs">PCS</string>
     <string name="txt_rp">Rp.</string>
@@ -29,7 +28,12 @@
     <string name="txt_pakaian">Pakaian</string>
     <string name="txt_kg">KG</string>
     <string name="txt_sepatu">Sepatu</string>
-    <string name="txt_pesan_antar">Pesan Antar</string>
+    <string name="txt_delivery_order">Pesan Antar</string>
+    <string name="txt_pesan_antar">
+        Pesan Antar merupakan layanan yang diberikan oleh Laundry kepada pelanggan. Layanan ini
+        bertujuan untuk mengambil dan mengantarkan cucian pelanggan sesuai dengan lokasi yang sudah
+        ditentukan oleh pelanggan. Apakah Laundry anda menyediakan layanan ini?
+    </string>
     <string name="txt_no">Tidak</string>
     <string name="txt_yes">Ya</string>
     <string name="txt_per">/</string>
@@ -44,7 +48,7 @@
     <string name="menu_daftar_order_title">Daftar Order</string>
     <string name="txt_laundry_profile">Laundry Profile</string>
     <string name="txt_washed">Cucian selesai hari ini</string>
-    <string name="btn_laundry_setting_title">Laundry Setting</string>
+    <string name="btn_title_laundry_detail">Detail Laundry</string>
     <string name="menu_cucian_title">Cucian</string>
     <string name="txt_account">Account</string>
     <string name="txt_logout">Keluar</string>
@@ -61,7 +65,7 @@
     <string name="txt_status">Status</string>
     <string name="txt_date_finish">Tanggal selesai</string>
     <string name="txt_weight">Berat</string>
-    <string name="txt_laundry_type">Jenis cucian</string>
+    <string name="txt_laundry_type">Jenis Cucian</string>
     <string name="txt_order_name">Nama pemesan</string>
     <string name="btn_detail">Detail</string>
     <string name="txt_time_delivery">Waktu pengiriman</string>
@@ -76,4 +80,15 @@
     <string name="btn_title_finish">Selesai</string>
     <string name="txt_net_income">Pendapatan bersih</string>
     <string name="txt_admin_cost">Potongan admin</string>
+    <string name="txt_laundry_open_close">Laundry sudah</string>
+    <string name="txt_time_operational_1">Waktu\nOperasional</string>
+    <string name="btn_title_save">Simpan</string>
+    <string name="txt_laundry_history">Riwayat Cucian</string>
+    <string name="txt_laundry_location">Lokasi\nLaundry</string>
+    <string name="activity_time_operational_title">Waktu Operasional</string>
+    <string name="activity_laundry_type_title">Jenis Cucian</string>
+    <string name="activity_laundry_detail_title">Info Laundry</string>
+    <string name="activity_map_title">Lokasi Laundry</string>
+    <string name="txt_close">Tutup</string>
+    <string name="menu_title_search">Search</string>
 </resources>

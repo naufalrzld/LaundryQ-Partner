@@ -24,6 +24,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.motion.laundryq_partner.activity.DetailLaundryActivity;
 import com.motion.laundryq_partner.activity.EditProfileActivity;
 import com.motion.laundryq_partner.activity.LoginActivity;
 import com.motion.laundryq_partner.R;
@@ -62,8 +64,8 @@ public class ProfileFragment extends Fragment {
     RatingBar rating;
     @BindView(R.id.tv_count_people_rate)
     TextView tvCountPeopleRate;
-    @BindView(R.id.btn_laundry_setting)
-    Button btnLaundrySetting;
+    @BindView(R.id.btn_laundry_detail)
+    Button btnLaundryDetail;
     @BindView(R.id.tv_phone_number)
     TextView tvPhoneNumber;
     @BindView(R.id.tv_email)
@@ -152,40 +154,13 @@ public class ProfileFragment extends Fragment {
             Glide.with(this).load(urlPhoto).into(imgPhotoLaundry);
             tvLaundryName.setText(laundryName);
 
-            databaseReference.child(laundryID).addChildEventListener(new ChildEventListener() {
+            databaseReference.child(laundryID).child(KEY_FDB_LAUNDRY_ACTIVE).addValueEventListener(new ValueEventListener() {
                 @Override
-                public void onChildAdded(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
-                }
-
-                @Override
-                public void onChildChanged(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-                    String key = dataSnapshot.getKey();
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Boolean status = (Boolean) dataSnapshot.getValue();
-                    assert key != null;
-                    switch (key) {
-                        case KEY_FDB_LAUNDRY_ACTIVE:
-                            laundryModel.setActive(status);
-                            break;
-                        case KEY_FDB_LAUNDRY_OPEN:
-                            laundryModel.setOpen(status);
-                            break;
-                    }
-
-                    changeStatusLaundry(laundryModel.isActive(), laundryModel.isOpen());
+                    laundryModel.setActive(status);
 
                     sharedPreference.storeData(KEY_LAUNDRY_PROFILE, laundryModel);
-
-                }
-
-                @Override
-                public void onChildRemoved(@NonNull DataSnapshot dataSnapshot) {
-
-                }
-
-                @Override
-                public void onChildMoved(@NonNull DataSnapshot dataSnapshot, @Nullable String s) {
-
                 }
 
                 @Override
@@ -202,6 +177,13 @@ public class ProfileFragment extends Fragment {
             tvCountTrx.setText("0");
             tvRateCount.setText("0.0");
             tvCountPeopleRate.setText("0");
+
+            btnLaundryDetail.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(getContext(), DetailLaundryActivity.class));
+                }
+            });
         }
     }
 

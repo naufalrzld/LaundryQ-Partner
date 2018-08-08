@@ -17,6 +17,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.motion.laundryq_partner.R;
 
@@ -94,7 +95,8 @@ public class ProfileLaundryFragment extends Fragment {
         tilLaundryName.setErrorEnabled(false);
         tilNoTlp.setErrorEnabled(false);
 
-        if (TextUtils.isEmpty(etLaundryName.getText().toString()) || TextUtils.isEmpty(etNoTlp.getText().toString())) {
+        if (TextUtils.isEmpty(etLaundryName.getText().toString()) || TextUtils.isEmpty(etNoTlp.getText().toString())
+                || imageUri == null) {
             if (TextUtils.isEmpty(etLaundryName.getText().toString())) {
                 tilLaundryName.setErrorEnabled(true);
                 tilLaundryName.setError("Nama laundry harus diisi!");
@@ -103,6 +105,10 @@ public class ProfileLaundryFragment extends Fragment {
             if (TextUtils.isEmpty(etNoTlp.getText().toString())) {
                 tilNoTlp.setErrorEnabled(true);
                 tilNoTlp.setError("Nomor telepon / WhatsApp harus diisi!");
+            }
+
+            if (imageUri == null) {
+                Toast.makeText(getContext(), "Masukkan foto laundry anda!", Toast.LENGTH_SHORT).show();
             }
 
             return false;

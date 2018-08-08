@@ -33,6 +33,7 @@ import io.reactivex.functions.Function;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     private Context context;
     private List<CategoryModel> listCategory;
+    private List<CategoryModel> listCategorySelected;
 
     public interface OnItemCheckListener {
         void onItemCheck(CategoryModel categoryModel);
@@ -50,6 +51,10 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
 
     public void setData(List<CategoryModel> listCategory) {
         this.listCategory = listCategory;
+    }
+
+    public void setListCategorySelected(List<CategoryModel> listCategorySelected) {
+        this.listCategorySelected = listCategorySelected;
     }
 
     @NonNull

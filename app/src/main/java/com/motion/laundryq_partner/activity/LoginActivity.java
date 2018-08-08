@@ -23,18 +23,35 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.gson.Gson;
 import com.motion.laundryq_partner.R;
+import com.motion.laundryq_partner.model.CategoryModel;
 import com.motion.laundryq_partner.model.LaundryModel;
+import com.motion.laundryq_partner.model.LaundryServicesModel;
+import com.motion.laundryq_partner.model.TimeOperationModel;
 import com.motion.laundryq_partner.model.UserModel;
 import com.motion.laundryq_partner.utils.SharedPreference;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORIES;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY_ICON;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY_NAME;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY_PRICE;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY_UNIT;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_DELIVERY_ORDER;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY_SERVICES;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_TIME_OPERATIONAL;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_USERS;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_USER_PARTNER;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_LAUNDRY_PROFILE;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_LAUNDRY_SERVICES;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_PROFILE;
 
 public class LoginActivity extends AppCompatActivity {
@@ -74,7 +91,6 @@ public class LoginActivity extends AppCompatActivity {
 
         auth = FirebaseAuth.getInstance();
         firebaseDatabase = FirebaseDatabase.getInstance();
-        databaseReference = firebaseDatabase.getReference(KEY_FDB_USERS).child(KEY_FDB_USER_PARTNER);
 
         sharedPreference = new SharedPreference(this);
 
@@ -145,6 +161,7 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void getDataUser(final String userID) {
+        databaseReference = firebaseDatabase.getReference(KEY_FDB_USERS).child(KEY_FDB_USER_PARTNER);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -177,14 +194,56 @@ public class LoginActivity extends AppCompatActivity {
         });
     }
 
-    private void getDataLaundry(String laundryID) {
+    private void getDataLaundry(final String laundryID) {
         databaseReference = firebaseDatabase.getReference(KEY_FDB_LAUNDRY).child(laundryID);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                loginLoading.dismiss();
                 LaundryModel laundryModel = dataSnapshot.getValue(LaundryModel.class);
                 sharedPreference.storeData(KEY_LAUNDRY_PROFILE, laundryModel);
+
+                getDataLaundryServices(laundryID);
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+                Log.e("error", "onCancelled: " + databaseError.getMessage());
+            }
+        });
+    }
+
+    private void getDataLaundryServices(String laundryID) {
+        databaseReference = firebaseDatabase.getReference(KEY_FDB_LAUNDRY_SERVICES);
+        databaseReference.child(laundryID).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                loginLoading.dismiss();
+                final List<CategoryModel> categoryList = new ArrayList<>();
+                final List<TimeOperationModel> timeList = new ArrayList<>();
+
+                final Boolean deliveryOrder = dataSnapshot.child(KEY_FDB_DELIVERY_ORDER).getValue(Boolean.class);
+
+                for (DataSnapshot categories : dataSnapshot.child(KEY_FDB_CATEGORIES).getChildren()) {
+                    String categoryID = categories.getKey();
+                    CategoryModel categoryModel = categories.getValue(CategoryModel.class);
+                    assert categoryModel != null;
+                    categoryModel.setCategoryID(categoryID);
+
+                    categoryList.add(categoryModel);
+                }
+
+                for (DataSnapshot timeOperational : dataSnapshot.child(KEY_FDB_TIME_OPERATIONAL).getChildren()) {
+                    String day = timeOperational.getKey();
+                    TimeOperationModel tom = timeOperational.getValue(TimeOperationModel.class);
+                    assert tom != null;
+                    tom.setDay(day);
+
+                    timeList.add(tom);
+                }
+
+                LaundryServicesModel laundryServicesModel = new LaundryServicesModel(timeList, categoryList, deliveryOrder);
+                sharedPreference.storeData(KEY_LAUNDRY_SERVICES, laundryServicesModel);
+
                 Intent intent = new Intent(LoginActivity.this, MainActivity.class);
                 startActivity(intent);
                 finish();
@@ -192,7 +251,7 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onCancelled(@NonNull DatabaseError databaseError) {
-
+                Log.e("error", "onCancelled: " + databaseError.getMessage());
             }
         });
     }
