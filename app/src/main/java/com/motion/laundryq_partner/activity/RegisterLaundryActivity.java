@@ -38,7 +38,7 @@ import com.motion.laundryq_partner.model.LaundryLocationModel;
 import com.motion.laundryq_partner.model.LaundryModel;
 import com.motion.laundryq_partner.model.LaundryServicesModel;
 import com.motion.laundryq_partner.model.LaundryServicesModelFBS;
-import com.motion.laundryq_partner.model.TimeOperationModel;
+import com.motion.laundryq_partner.model.TimeOperationalModel;
 import com.motion.laundryq_partner.model.UserModel;
 import com.motion.laundryq_partner.utils.SharedPreference;
 
@@ -177,7 +177,7 @@ public class RegisterLaundryActivity extends AppCompatActivity {
                     } else if (fragment instanceof ServiceLaundryFragment) {
                         ServiceLaundryFragment serviceLaundryFragment = (ServiceLaundryFragment) fragment;
                         if (serviceLaundryFragment.isInputValid()) {
-                            List<TimeOperationModel> listTime = serviceLaundryFragment.getTimeListSelected();
+                            List<TimeOperationalModel> listTime = serviceLaundryFragment.getTimeListSelected();
                             List<CategoryModel> listCategory = serviceLaundryFragment.getCategoryListSelected();
                             boolean deliveryOrder = serviceLaundryFragment.deliveryOrder();
                             laundryServicesModel = new LaundryServicesModel(listTime, listCategory, deliveryOrder);
@@ -313,12 +313,12 @@ public class RegisterLaundryActivity extends AppCompatActivity {
         registerLoading.show();
         databaseReference = firebaseDatabase.getReference(KEY_FDB_LAUNDRY_SERVICES);
 
-        List<TimeOperationModel> timeOperational = laundryServicesModel.getTimeOperationalList();
+        List<TimeOperationalModel> timeOperational = laundryServicesModel.getTimeOperationalList();
         List<CategoryModel> categoryList = laundryServicesModel.getCagoryList();
 
-        Map<String, TimeOperationModel> dayTimeMap = new HashMap<>();
-        for (TimeOperationModel tom : timeOperational) {
-            TimeOperationModel time = new TimeOperationModel(tom.getDayNum(), tom.getTimeOpen(), tom.getTimeClose());
+        Map<String, TimeOperationalModel> dayTimeMap = new HashMap<>();
+        for (TimeOperationalModel tom : timeOperational) {
+            TimeOperationalModel time = new TimeOperationalModel(tom.getDayNum(), tom.getTimeOpen(), tom.getTimeClose());
             dayTimeMap.put(tom.getDay(), time);
         }
 

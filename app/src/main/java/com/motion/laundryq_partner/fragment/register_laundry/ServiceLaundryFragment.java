@@ -5,13 +5,11 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -23,8 +21,7 @@ import com.motion.laundryq_partner.adapter.CategoryAdapter;
 import com.motion.laundryq_partner.adapter.DaysAdapter;
 import com.motion.laundryq_partner.customviews.NonscrollRecylerview;
 import com.motion.laundryq_partner.model.CategoryModel;
-import com.motion.laundryq_partner.model.LaundryServicesModel;
-import com.motion.laundryq_partner.model.TimeOperationModel;
+import com.motion.laundryq_partner.model.TimeOperationalModel;
 import com.motion.laundryq_partner.utils.TimeOperationalData;
 
 import java.util.ArrayList;
@@ -49,7 +46,7 @@ public class ServiceLaundryFragment extends Fragment {
     private FirebaseDatabase firebaseDatabase;
     private DatabaseReference databaseReference;
 
-    private List<TimeOperationModel> timeListSelected = new ArrayList<>();
+    private List<TimeOperationalModel> timeListSelected = new ArrayList<>();
     private List<CategoryModel> categoryListSelected = new ArrayList<>();
 
     private CategoryAdapter categoryAdapter;
@@ -73,18 +70,18 @@ public class ServiceLaundryFragment extends Fragment {
 
         DaysAdapter daysAdapter = new DaysAdapter(getContext(), new DaysAdapter.OnItemCheckListener() {
             @Override
-            public void onItemCheck(TimeOperationModel timeOperationModel) {
+            public void onItemCheck(TimeOperationalModel timeOperationModel) {
                 timeListSelected.add(timeOperationModel);
             }
 
             @Override
-            public void onItemUpdate(TimeOperationModel timeOperationModel) {
+            public void onItemUpdate(TimeOperationalModel timeOperationModel) {
                 timeListSelected.remove(timeOperationModel);
                 timeListSelected.add(timeOperationModel);
             }
 
             @Override
-            public void onItemUncheck(TimeOperationModel timeOperationModel) {
+            public void onItemUncheck(TimeOperationalModel timeOperationModel) {
                 timeListSelected.remove(timeOperationModel);
             }
         });
@@ -93,7 +90,7 @@ public class ServiceLaundryFragment extends Fragment {
         rvTime.setLayoutManager(new LinearLayoutManager(getContext()));
         rvTime.setAdapter(daysAdapter);
 
-        daysAdapter.setData(TimeOperationalData.setTimeOperational());
+        daysAdapter.setData(TimeOperationalData.getTimeOperational());
 
         categoryAdapter = new CategoryAdapter(getContext(), new CategoryAdapter.OnItemCheckListener() {
             @Override
@@ -128,7 +125,7 @@ public class ServiceLaundryFragment extends Fragment {
         return v;
     }
 
-    public List<TimeOperationModel> getTimeListSelected() {
+    public List<TimeOperationalModel> getTimeListSelected() {
         return timeListSelected;
     }
 

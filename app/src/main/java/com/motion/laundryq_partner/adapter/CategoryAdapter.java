@@ -33,7 +33,6 @@ import io.reactivex.functions.Function;
 public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHolder> {
     private Context context;
     private List<CategoryModel> listCategory;
-    private List<CategoryModel> listCategorySelected;
 
     public interface OnItemCheckListener {
         void onItemCheck(CategoryModel categoryModel);
@@ -53,10 +52,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
         this.listCategory = listCategory;
     }
 
-    public void setListCategorySelected(List<CategoryModel> listCategorySelected) {
-        this.listCategorySelected = listCategorySelected;
-    }
-
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
@@ -68,8 +63,6 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         final CategoryModel categoryModel = listCategory.get(position);
-        categoryModel.setCategoryPrice(0);
-        categoryModel.setCategoryUnit("PCS");
 
         final Observable<String> priceStream = RxTextView.textChanges(holder.etPrice)
                 .map(new Function<CharSequence, String>() {
@@ -107,6 +100,24 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
             }
         };
 
+        if (categoryModel.isSelected()) {
+            holder.cbCategory.setChecked(true);
+            holder.cbCategory.setText(categoryModel.getCategoryName());
+            if (categoryModel.getCategoryUnit().equals("KG")) {
+                holder.rbKg.setChecked(true);
+            } else {
+                holder.rbPcs.setChecked(true);
+            }
+            holder.lytPrice.setVisibility(View.VISIBLE);
+            holder.etPrice.setText(String.valueOf(categoryModel.getCategoryPrice()));
+
+            priceStream.subscribe(priceObserver);
+            onItemCheckListener.onItemCheck(categoryModel);
+        } else {
+            categoryModel.setCategoryPrice(0);
+            categoryModel.setCategoryUnit("PCS");
+        }
+
         holder.cbCategory.setText(categoryModel.getCategoryName());
         holder.cbCategory.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +144,7 @@ public class CategoryAdapter extends RecyclerView.Adapter<CategoryAdapter.ViewHo
                 onItemCheckListener.onItemUpdate(categoryModel);
             }
         });
+        holder.etPrice.setSelection(String.valueOf(categoryModel.getCategoryPrice()).length());
     }
 
     @Override

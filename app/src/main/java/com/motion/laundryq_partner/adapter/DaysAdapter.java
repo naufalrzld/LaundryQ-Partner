@@ -10,13 +10,11 @@ import android.view.ViewGroup;
 import android.widget.CheckBox;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.motion.laundryq_partner.R;
-import com.motion.laundryq_partner.model.TimeOperationModel;
+import com.motion.laundryq_partner.model.TimeOperationalModel;
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -25,12 +23,12 @@ import butterknife.ButterKnife;
 
 public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.ViewHolder> {
     private Context context;
-    private List<TimeOperationModel> timeList;
+    private List<TimeOperationalModel> timeList;
 
     public interface OnItemCheckListener {
-        void onItemCheck(TimeOperationModel timeOperationModel);
-        void onItemUpdate(TimeOperationModel timeOperationModel);
-        void onItemUncheck(TimeOperationModel timeOperationModel);
+        void onItemCheck(TimeOperationalModel timeOperationalModel);
+        void onItemUpdate(TimeOperationalModel timeOperationalModel);
+        void onItemUncheck(TimeOperationalModel timeOperationalModel);
     }
 
     @NonNull
@@ -41,7 +39,7 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.ViewHolder> {
         this.onItemCheckListener = onItemCheckListener;
     }
 
-    public void setData(List<TimeOperationModel> timeList) {
+    public void setData(List<TimeOperationalModel> timeList) {
         this.timeList = timeList;
     }
 
@@ -54,23 +52,29 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
-        final TimeOperationModel timeOperationModel = timeList.get(position);
+        final TimeOperationalModel timeOperationalModel = timeList.get(position);
 
-        holder.cbDay.setText(timeOperationModel.getDay());
+        if (timeOperationalModel.isSelected()) {
+            holder.cbDay.setChecked(true);
+            holder.lytTime.setVisibility(View.VISIBLE);
+            onItemCheckListener.onItemCheck(timeOperationalModel);
+        }
+
+        holder.cbDay.setText(timeOperationalModel.getDay());
         holder.cbDay.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (holder.cbDay.isChecked()) {
                     holder.lytTime.setVisibility(View.VISIBLE);
-                    onItemCheckListener.onItemCheck(timeOperationModel);
+                    onItemCheckListener.onItemCheck(timeOperationalModel);
                 } else {
                     holder.lytTime.setVisibility(View.GONE);
-                    onItemCheckListener.onItemUncheck(timeOperationModel);
+                    onItemCheckListener.onItemUncheck(timeOperationalModel);
                 }
             }
         });
-        holder.tvOpen.setText(timeOperationModel.getTimeOpen());
-        holder.tvClosed.setText(timeOperationModel.getTimeClose());
+        holder.tvOpen.setText(timeOperationalModel.getTimeOpen());
+        holder.tvClosed.setText(timeOperationalModel.getTimeClose());
         holder.tvOpen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -92,8 +96,8 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.ViewHolder> {
                             timeOpen = hourOfDay + ":" + minute;
                         }
                         holder.tvOpen.setText(timeOpen);
-                        timeOperationModel.setTimeOpen(timeOpen);
-                        onItemCheckListener.onItemUpdate(timeOperationModel);
+                        timeOperationalModel.setTimeOpen(timeOpen);
+                        onItemCheckListener.onItemUpdate(timeOperationalModel);
                     }
                 });
             }
@@ -119,8 +123,8 @@ public class DaysAdapter extends RecyclerView.Adapter<DaysAdapter.ViewHolder> {
                             timeClosed = hourOfDay + ":" + minute;
                         }
                         holder.tvClosed.setText(timeClosed);
-                        timeOperationModel.setTimeClose(timeClosed);
-                        onItemCheckListener.onItemUpdate(timeOperationModel);
+                        timeOperationalModel.setTimeClose(timeClosed);
+                        onItemCheckListener.onItemUpdate(timeOperationalModel);
                     }
                 });
             }

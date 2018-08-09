@@ -11,6 +11,7 @@ public class CategoryModel implements Parcelable {
     private String icon;
     private Integer quantity;
     private Integer status;
+    private boolean selected;
 
     public CategoryModel() {
     }
@@ -87,6 +88,14 @@ public class CategoryModel implements Parcelable {
 
     public void setStatus(Integer status) {
         this.status = status;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 
     @Override

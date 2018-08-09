@@ -33,6 +33,8 @@ import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_ADDR
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_ADDRESS_DETAIL;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_EDIT;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_DELIVERY_ORDER;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY_OPEN;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY_SERVICES;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_LAUNDRY_PROFILE;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_LAUNDRY_SERVICES;
@@ -77,13 +79,7 @@ public class DetailLaundryActivity extends AppCompatActivity {
         swOpenClose.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean status) {
-                String statusMsg;
-                if (status) {
-                    statusMsg = "Buka";
-                } else {
-                    statusMsg = "Tutup";
-                }
-                swOpenClose.setText(statusMsg);
+                updateStatusOpen(laundryID, status);
             }
         });
 
@@ -179,6 +175,24 @@ public class DetailLaundryActivity extends AppCompatActivity {
         });
     }
 
+    private void updateStatusOpen(String laundryID, final boolean isOpen) {
+        DatabaseReference databaseReference = FirebaseDatabase.getInstance().getReference(KEY_FDB_LAUNDRY);
+        databaseReference.child(laundryID).child(KEY_FDB_LAUNDRY_OPEN).setValue(isOpen).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    String statusMsg;
+                    if (isOpen) {
+                        statusMsg = "Buka";
+                    } else {
+                        statusMsg = "Tutup";
+                    }
+                    swOpenClose.setText(statusMsg);
+                }
+            }
+        });
+    }
+
     @Override
     protected void onResume() {
         super.onResume();
@@ -186,8 +200,11 @@ public class DetailLaundryActivity extends AppCompatActivity {
         LaundryModel laundryModel = sharedPreference.getObjectData(KEY_LAUNDRY_PROFILE, LaundryModel.class);
         laundryServicesModel = sharedPreference.getObjectData(KEY_LAUNDRY_SERVICES, LaundryServicesModel.class);
         laundryID = laundryModel.getLaundryID();
+        boolean isOpen = laundryModel.isOpen();
         deliveryOrder = laundryServicesModel.isDeliveryOrder();
         laundryLocationModel = laundryModel.getLocation();
+
+        swOpenClose.setChecked(isOpen);
     }
 
     @Override

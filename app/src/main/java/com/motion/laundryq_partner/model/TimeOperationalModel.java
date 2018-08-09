@@ -1,21 +1,22 @@
 package com.motion.laundryq_partner.model;
 
-public class TimeOperationModel {
+public class TimeOperationalModel {
     private String day;
     private int dayNum;
     private String timeOpen;
     private String timeClose;
+    private boolean selected;
 
-    public TimeOperationModel() {
+    public TimeOperationalModel() {
     }
 
-    public TimeOperationModel(int dayNum, String timeOpen, String timeClose) {
+    public TimeOperationalModel(int dayNum, String timeOpen, String timeClose) {
         this.dayNum = dayNum;
         this.timeOpen = timeOpen;
         this.timeClose = timeClose;
     }
 
-    public TimeOperationModel(String day, int dayNum, String timeOpen, String timeClose) {
+    public TimeOperationalModel(String day, int dayNum, String timeOpen, String timeClose) {
         this.day = day;
         this.dayNum = dayNum;
         this.timeOpen = timeOpen;
@@ -52,5 +53,13 @@ public class TimeOperationModel {
 
     public void setTimeClose(String timeClose) {
         this.timeClose = timeClose;
+    }
+
+    public boolean isSelected() {
+        return selected;
+    }
+
+    public void setSelected(boolean selected) {
+        this.selected = selected;
     }
 }

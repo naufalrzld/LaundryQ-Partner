@@ -46,10 +46,10 @@ import static com.motion.laundryq_partner.utils.AppConstant.KEY_PROFILE;
  * A simple {@link Fragment} subclass.
  */
 public class ProfileFragment extends Fragment {
-    @BindView(R.id.img_profile)
+    /*@BindView(R.id.img_profile)
     ImageView imgProfile;
     @BindView(R.id.tv_name)
-    TextView tvName;
+    TextView tvName;*/
     @BindView(R.id.tv_laundry_status)
     TextView tvLaundryStatus;
     @BindView(R.id.img_photo_laundry)
@@ -128,17 +128,17 @@ public class ProfileFragment extends Fragment {
             String name = userModel.getNama();
             String phoneNumber = userModel.getNoTlp();
             String email = userModel.getEmail();
-            String urlPhoto = userModel.getUrlPhoto();
+            //String urlPhoto = userModel.getUrlPhoto();
 
-            if (!TextUtils.isEmpty(urlPhoto)) {
+            /*if (!TextUtils.isEmpty(urlPhoto)) {
                 Glide.with(this)
                         .load(urlPhoto)
                         .apply(RequestOptions.circleCropTransform())
                         .apply(new RequestOptions().override(400, 400))
                         .into(imgProfile);
-            }
+            }*/
 
-            tvName.setText(name);
+            //tvName.setText(name);
             tvPhoneNumber.setText(phoneNumber);
             tvEmail.setText(email);
         }
@@ -159,6 +159,21 @@ public class ProfileFragment extends Fragment {
                 public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                     Boolean status = (Boolean) dataSnapshot.getValue();
                     laundryModel.setActive(status);
+
+                    sharedPreference.storeData(KEY_LAUNDRY_PROFILE, laundryModel);
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                }
+            });
+
+            databaseReference.child(laundryID).child(KEY_FDB_LAUNDRY_OPEN).addValueEventListener(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                    Boolean status = (Boolean) dataSnapshot.getValue();
+                    laundryModel.setOpen(status);
 
                     sharedPreference.storeData(KEY_LAUNDRY_PROFILE, laundryModel);
                 }

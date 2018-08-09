@@ -43,8 +43,9 @@
         <activity android:name=".activity.DetailOrderActivity" />
         <activity android:name=".activity.DetailLaundryActivity" />
         <activity android:name=".activity.TimeOperationalActivity" />
-        <activity android:name=".activity.LaundryTypeActivity" />
-        <activity android:name=".activity.MapActivity"></activity>
+        <activity android:name=".activity.LaundryTypeActivity"
+            android:windowSoftInputMode="adjustNothing"/>
+        <activity android:name=".activity.MapActivity"/>
     </application>
 
 </manifest>

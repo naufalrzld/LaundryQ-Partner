@@ -23,12 +23,11 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.gson.Gson;
 import com.motion.laundryq_partner.R;
 import com.motion.laundryq_partner.model.CategoryModel;
 import com.motion.laundryq_partner.model.LaundryModel;
 import com.motion.laundryq_partner.model.LaundryServicesModel;
-import com.motion.laundryq_partner.model.TimeOperationModel;
+import com.motion.laundryq_partner.model.TimeOperationalModel;
 import com.motion.laundryq_partner.model.UserModel;
 import com.motion.laundryq_partner.utils.SharedPreference;
 
@@ -39,11 +38,6 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORIES;
-import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY;
-import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY_ICON;
-import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY_NAME;
-import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY_PRICE;
-import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY_UNIT;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_DELIVERY_ORDER;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_LAUNDRY_SERVICES;
@@ -219,7 +213,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 loginLoading.dismiss();
                 final List<CategoryModel> categoryList = new ArrayList<>();
-                final List<TimeOperationModel> timeList = new ArrayList<>();
+                final List<TimeOperationalModel> timeList = new ArrayList<>();
 
                 final Boolean deliveryOrder = dataSnapshot.child(KEY_FDB_DELIVERY_ORDER).getValue(Boolean.class);
 
@@ -234,7 +228,7 @@ public class LoginActivity extends AppCompatActivity {
 
                 for (DataSnapshot timeOperational : dataSnapshot.child(KEY_FDB_TIME_OPERATIONAL).getChildren()) {
                     String day = timeOperational.getKey();
-                    TimeOperationModel tom = timeOperational.getValue(TimeOperationModel.class);
+                    TimeOperationalModel tom = timeOperational.getValue(TimeOperationalModel.class);
                     assert tom != null;
                     tom.setDay(day);
 
