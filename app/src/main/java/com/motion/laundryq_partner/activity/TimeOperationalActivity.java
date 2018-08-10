@@ -143,7 +143,7 @@ public class TimeOperationalActivity extends AppCompatActivity {
         Map<String, Object> dayMap = new HashMap<>();
         for (TimeOperationalModel tom : updateTimeList) {
             Map<String, Object> map = new HashMap<>();
-            map.put(KEY_FDB_DAY_NUM, tom.getDay());
+            map.put(KEY_FDB_DAY_NUM, tom.getDayNum());
             map.put(KEY_FDB_TIME_CLOSE, tom.getTimeClose());
             map.put(KEY_FDB_TIME_OPEN, tom.getTimeOpen());
             dayMap.put(tom.getDay(), map);

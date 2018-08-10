@@ -35,6 +35,7 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_ORDER_MODEL;
+import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_READY_TO_SEND;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_DATA_INTENT_STATUS;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORIES;
 import static com.motion.laundryq_partner.utils.AppConstant.KEY_FDB_CATEGORY_ID;
@@ -83,7 +84,9 @@ public class DetailOrderActivity extends AppCompatActivity {
     private OrderModel orderModel;
     private AddressModel addressPickModel, addressDeliveryModel;
 
+    private String laundryID;
     private int status;
+    private boolean readyToSend;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -103,6 +106,7 @@ public class DetailOrderActivity extends AppCompatActivity {
         addressDeliveryModel = orderModel.getAddressDelivery();
 
         status = dataIntent.getIntExtra(KEY_DATA_INTENT_STATUS, 0);
+        readyToSend = dataIntent.getBooleanExtra(KEY_DATA_INTENT_READY_TO_SEND, false);
 
         initView();
         setAdapter(status);
@@ -130,7 +134,7 @@ public class DetailOrderActivity extends AppCompatActivity {
         String total = CurrencyConverter.toIDR(orderModel.getTotal());
         String adminCost = CurrencyConverter.toIDR(orderModel.getAdminCost());
         String netIncome = CurrencyConverter.toIDR(orderModel.getLaundryCost());
-        final String laundryID = orderModel.getLaundryID();
+        laundryID = orderModel.getLaundryID();
 
         tvOrderID.setText(orderID);
         tvDateOrder.setText(dateOrder);
@@ -167,7 +171,24 @@ public class DetailOrderActivity extends AppCompatActivity {
 
         if (isAllLaundryFinished(orderModel.getCategories())) {
             btnFinish.setVisibility(View.VISIBLE);
+            if (readyToSend) {
+                btnFinish.setText("Kirim");
+            }
         }
+
+        btnFinish.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                int status;
+                if (readyToSend) {
+                    status = 5;
+                } else {
+                    status = 4;
+                }
+                updateStatus(orderID, laundryID, status);
+                finish();
+            }
+        });
     }
 
     private void setAdapter(int status) {
@@ -181,6 +202,10 @@ public class DetailOrderActivity extends AppCompatActivity {
             @Override
             public void onButtonClicked(int status, int position) {
                 String orderID = orderModel.getOrderID();
+                if (isAllLaundryNotWashing(orderModel.getCategories())) {
+                    updateStatus(orderID, laundryID, 3);
+                }
+
                 updateStatusCategory(orderID, status, String.valueOf(position));
             }
         });
@@ -189,16 +214,24 @@ public class DetailOrderActivity extends AppCompatActivity {
     private void updateStatus(String orderID, String laundryID, final int status) {
         Map<String, Object> map = new HashMap<>();
         map.put(KEY_FDB_STATUS_ORDER, status);
-        map.put(KEY_FDB_LAUNDRY_ID_STATUS, laundryID + "_" + status);
+        if (status != 3) {
+            map.put(KEY_FDB_LAUNDRY_ID_STATUS, laundryID + "_" + status);
+        }
 
         databaseReference.child(orderID).updateChildren(map).addOnCompleteListener(new OnCompleteListener<Void>() {
             @Override
             public void onComplete(@NonNull Task<Void> task) {
-                String statusMsg;
+                String statusMsg = "";
                 if (status == 1) {
                     statusMsg = "Diterima";
-                } else {
+                } else if (status == 2) {
                     statusMsg = "Ditolak";
+                } else if (status == 3) {
+                    statusMsg = "Dicuci";
+                } else if (status == 4) {
+                    statusMsg = "Selesai";
+                } else if (status == 5) {
+                    statusMsg = "Dikirim";
                 }
 
                 Toast.makeText(getApplicationContext(), statusMsg, Toast.LENGTH_SHORT).show();
@@ -222,6 +255,7 @@ public class DetailOrderActivity extends AppCompatActivity {
                             cm.setStatus(updateStatus);
 
                             categories.set(pos, cm);
+                            orderModel.setCategories(categories);
                             adapter.notifyItemChanged(pos);
 
                             if (isAllLaundryFinished(categories)) {
@@ -237,6 +271,22 @@ public class DetailOrderActivity extends AppCompatActivity {
         int count = 0;
         for (CategoryModel cm : categories) {
             if (cm.getStatus() == 0 || cm.getStatus() == 1) {
+                count++;
+            }
+        }
+
+        if (count == 0) {
+            status = true;
+        }
+
+        return status;
+    }
+
+    private boolean isAllLaundryNotWashing(List<CategoryModel> categories) {
+        boolean status = false;
+        int count = 0;
+        for (CategoryModel cm : categories) {
+            if (cm.getStatus() == 1) {
                 count++;
             }
         }

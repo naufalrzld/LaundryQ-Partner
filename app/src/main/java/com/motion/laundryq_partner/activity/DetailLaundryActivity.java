@@ -204,7 +204,15 @@ public class DetailLaundryActivity extends AppCompatActivity {
         deliveryOrder = laundryServicesModel.isDeliveryOrder();
         laundryLocationModel = laundryModel.getLocation();
 
+        String status;
+        if (isOpen) {
+            status = "Buka";
+        } else {
+            status = "Tutup";
+        }
+
         swOpenClose.setChecked(isOpen);
+        swOpenClose.setText(status);
     }
 
     @Override

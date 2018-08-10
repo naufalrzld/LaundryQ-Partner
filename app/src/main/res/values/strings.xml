@@ -91,4 +91,7 @@
     <string name="activity_map_title">Lokasi Laundry</string>
     <string name="txt_close">Tutup</string>
     <string name="menu_title_search">Search</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

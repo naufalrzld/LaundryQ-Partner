@@ -3,6 +3,7 @@ package com.motion.laundryq_partner.activity;
 import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
@@ -25,6 +26,8 @@ import butterknife.ButterKnife;
 public class MainActivity extends AppCompatActivity {
     @BindView(R.id.toolbar)
     Toolbar toolbar;
+    @BindView(R.id.tabs)
+    TabLayout tabLayout;
     @BindView(R.id.bottomNavView)
     BottomNavigationView bottomNavView;
 
@@ -62,6 +65,7 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.nav_list_order:
                     if (!(currentFragment instanceof ListOrderFragment)) {
+                        tabLayout.setVisibility(View.GONE);
                         fragment = new ListOrderFragment();
                         loadFragment(fragment);
                         return true;
@@ -69,13 +73,17 @@ public class MainActivity extends AppCompatActivity {
                     break;
                 case R.id.nav_cucian:
                     if (!(currentFragment instanceof WashingFragment)) {
-                        fragment = new WashingFragment();
+                        tabLayout.setVisibility(View.VISIBLE);
+                        WashingFragment washingFragment = new WashingFragment();
+                        washingFragment.setTabLayout(tabLayout);
+                        fragment = washingFragment;
                         loadFragment(fragment);
                         return true;
                     }
                     break;
                 case R.id.nav_profile:
                     if (!(currentFragment instanceof ProfileFragment)) {
+                        tabLayout.setVisibility(View.GONE);
                         fragment = new ProfileFragment();
                         loadFragment(fragment);
                         return true;

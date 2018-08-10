@@ -31,7 +31,7 @@ public class AppConstant {
     public static final String KEY_FDB_LAUNDRY_ID = "laundryID";
     public static final String KEY_FDB_STATUS_ORDER = "status";
     public static final String KEY_FDB_LAUNDRY_ID_STATUS = "laundryID_status";
-    public static final String KEY_FDB_DAY_NUM = "laundryID_status";
+    public static final String KEY_FDB_DAY_NUM = "dayNum";
 
     public static final String KEY_LAUNDRY_PROFILE = "laundry_profile";
     public static final String KEY_LAUNDRY_LOCATION = "laundry_location";
@@ -42,6 +42,7 @@ public class AppConstant {
     public static final String KEY_DATA_INTENT_STATUS = "status";
     public static final String KEY_DATA_INTENT_ADDRESS = "address";
     public static final String KEY_DATA_INTENT_ADDRESS_DETAIL = "detailAddress";
+    public static final String KEY_DATA_INTENT_READY_TO_SEND = "readyToSend";
 
     public static final int KEY_INTENT_LIST_ORDER = 0;
     public static final int KEY_INTENT_CUCIAN = 1;

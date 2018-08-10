@@ -102,6 +102,8 @@ public class RegisterAccountActivity extends AppCompatActivity {
         tilPassword.setErrorEnabled(false);
         tilConfPassword.setErrorEnabled(false);
 
+        String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
+
         if (TextUtils.isEmpty(nama) || TextUtils.isEmpty(noTlp) || TextUtils.isEmpty(email) ||
                 TextUtils.isEmpty(pass) || TextUtils.isEmpty(confPass)) {
             if (TextUtils.isEmpty(nama)) {
@@ -131,16 +133,21 @@ public class RegisterAccountActivity extends AppCompatActivity {
 
             return false;
         } else {
-            if (pass.length() < 6) {
-                tilPassword.setErrorEnabled(true);
-                tilPassword.setError("Password minimal 6 karakter!");
+            if (!email.matches(emailPattern) || pass.length() < 6 || !pass.equals(confPass)) {
+                if (!email.matches(emailPattern)) {
+                    tilEmail.setErrorEnabled(true);
+                    tilEmail.setError("Email tidak valid!");
+                }
 
-                return false;
-            }
+                if (pass.length() < 6) {
+                    tilPassword.setErrorEnabled(true);
+                    tilPassword.setError("Password minimal 6 karakter!");
+                }
 
-            if (!pass.equals(confPass)) {
-                tilConfPassword.setErrorEnabled(true);
-                tilConfPassword.setError("Konfirmasi password tidak sesuai!");
+                if (!pass.equals(confPass)) {
+                    tilConfPassword.setErrorEnabled(true);
+                    tilConfPassword.setError("Konfirmasi password tidak sesuai!");
+                }
 
                 return false;
             }
